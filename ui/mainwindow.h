@@ -30,6 +30,8 @@ private slots:
     void on_editColumns_editingFinished();
 
 private:
+    bool flagColumns = true, flagRows = true;
+
     int rows = 11;
     int columns = 11;
     Matrix matrix;

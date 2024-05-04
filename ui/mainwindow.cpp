@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->progressBar->reset();
+    this->setWindowTitle("GFTS3");
 }
 
 MainWindow::~MainWindow()
@@ -87,30 +88,39 @@ void MainWindow::on_editRows_editingFinished()
         msgBox.exec();
 
         ui->start->setEnabled(false);
+        flagRows = false;
 
         return;
     }
 
-    rows = ui->editRows->text().toInt() + 1;
+    rows = ui->editRows->text().toInt();
 
     if (rows < 0)
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Количество строк не может быть меньше 0");
+        msgBox.setText("Количество разбиений по y не может быть меньше 0");
         msgBox.exec();
 
+        flagRows = false;
+
         ui->start->setEnabled(false);
+
+        return;
     }
 
-    return;
+    rows++;
+
+    flagRows = true;
+
+    if (flagRows && flagColumns) ui->start->setEnabled(true);
 }
 
 
 void MainWindow::on_editColumns_editingFinished()
 {
     bool ok;
-    ui->editRows->text().toInt(&ok);
+    ui->editColumns->text().toInt(&ok);
 
     if (ok == false)
     {
@@ -121,22 +131,32 @@ void MainWindow::on_editColumns_editingFinished()
 
         ui->start->setEnabled(false);
 
+        flagColumns = false;
+
         return;
     }
 
-    columns = ui->editRows->text().toInt() + 1;
+    columns = ui->editColumns->text().toInt();
 
     if (columns < 0)
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Количество столбцов не может быть меньше 0");
+        msgBox.setText("Количество разбиений по x не может быть меньше 0");
         msgBox.exec();
 
+        flagColumns = false;
+
         ui->start->setEnabled(false);
+
+        return;
     }
 
-    return;
+    columns++;
+
+    flagColumns = true;
+
+    if (flagRows && flagColumns) ui->start->setEnabled(true);
 }
 
 void MainWindow::fillMatrix()
