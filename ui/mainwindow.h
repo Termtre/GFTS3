@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <vector>
+#include <QtGraphs>
 
 using Matrix = std::vector<std::vector<float>>;
 
@@ -29,12 +30,19 @@ private slots:
 
     void on_editColumns_editingFinished();
 
+    void on_checkBox_clicked(bool checked);
+
+    void on_comboBox_currentIndexChanged(int index);
+
 private:
     bool flagColumns = true, flagRows = true;
 
     int rows = 11;
     int columns = 11;
     Matrix matrix;
+
+    Q3DSurface* surfaceGraph = nullptr;
+    QSurface3DSeries *series = nullptr;
 
 private:
     void fillMatrix();

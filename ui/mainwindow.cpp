@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -10,6 +9,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->progressBar->reset();
     this->setWindowTitle("GFTS3");
+
+    surfaceGraph = new Q3DSurface();
+
+    ui->gridLayout_7->addWidget(surfaceGraph);
+
+    ui->comboBox->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+    ui->comboBox_3->setCurrentIndex(0);
+    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget_2->setCurrentIndex(0);
+
+    ui->textBrowser->setSource(QUrl("qrc:/htmls/urls/testtask.html"), QTextDocument::HtmlResource);
+
+    ui->tableWidget_2->hide();
 }
 
 MainWindow::~MainWindow()
@@ -19,6 +32,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_start_clicked()
 {
+    if (series) surfaceGraph->removeSeries(series);
+    series = nullptr;
     matrix.resize(rows);
 
     for (auto it = matrix.begin(); it != matrix.end(); ++it)
@@ -36,42 +51,67 @@ void MainWindow::on_start_clicked()
 
     QStringList horizontalLabels;
     QStringList verticalLabels;
-
-    for (int i = 0; i < columns; i++)
-    {
-        horizontalLabels << QString::number(i);
-    }
-
-    for (int j = 0; j < rows; j++)
-    {
-        verticalLabels << QString::number(j);
-    }
-
-    ui->tableWidget->setHorizontalHeaderLabels(horizontalLabels);
-    ui->tableWidget->setVerticalHeaderLabels(verticalLabels);
+    // test
+    auto dataArray = QSurfaceDataArray();
 
     for (int i = 0; i < rows; i++)
     {
+        horizontalLabels << QString::number(i);
+        verticalLabels << QString::number(i);
+        // test
+        auto newRow = QSurfaceDataRow();
+
         for (int j = 0; j < columns; j++)
         {
             ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(matrix[i][j])));
             ui->progressBar->setValue(i * columns + j);
+            newRow << QSurfaceDataItem(matrix[i][j], float(j), float(i));
         }
+
+        dataArray << newRow;
     }
+
+    series = new QSurface3DSeries();
+    series->dataProxy()->resetArray(dataArray);
+
+    surfaceGraph->addSeries(series);
+
+    ui->tableWidget->setHorizontalHeaderLabels(horizontalLabels);
+    ui->tableWidget->setVerticalHeaderLabels(verticalLabels);
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 {
-    QUrl url1("testtask.html");
-    QUrl url2("maintask.html");
+    QUrl url1("qrc:/htmls/urls/testtask.html");
+    QUrl url2("qrc:/htmls/urls/maintask.html");
 
     if (index == 0)
     {
         ui->textBrowser->setSource(url1, QTextDocument::HtmlResource);
+        ui->labelTypeTask->setText("Тестовая задача");
+        ui->tabWidget_2->setTabText(0, "Точное решение");
+        ui->tabWidget_2->setTabText(1, "Численное решение");
+        ui->tabWidget_2->setTabText(2, "Разность точного и численного решений");
+
+        if (ui->comboBox_3->count() == 5) ui->comboBox_3->removeItem(4);
+        ui->comboBox_3->setItemText(0, "Точное решение");
+        ui->comboBox_3->setItemText(1, "Начальное приближение");
+        ui->comboBox_3->setItemText(2, "Численное решение");
+        ui->comboBox_3->setItemText(3, "Разность точного и численного решений");
     }
     else
     {
         ui->textBrowser->setSource(url2, QTextDocument::HtmlResource);
+        ui->labelTypeTask->setText("Основная задача");
+        ui->tabWidget_2->setTabText(0, "Численное решение ");
+        ui->tabWidget_2->setTabText(1, "Численное решение с половинным шагом");
+        ui->tabWidget_2->setTabText(2, "Разность численных решений");
+
+        ui->comboBox_3->setItemText(0, "Начальное приближение");
+        ui->comboBox_3->setItemText(1, "Начальное приближение на сетке с половинным шагом");
+        ui->comboBox_3->setItemText(2, "Численное решение");
+        ui->comboBox_3->setItemText(3, "Численное решение на сетке с половинным шагом");
+        ui->comboBox_3->addItem("Разность численных решений");
     }
 }
 
@@ -167,6 +207,44 @@ void MainWindow::fillMatrix()
         {
             matrix[i][j] = i * j;
         }
+    }
+}
+
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    if (!series) return;
+    if (checked) series->setWireframeColor(QColor(0, 0, 0, 255));
+    else series->setWireframeColor(QColor(0, 0, 0, 0));
+}
+
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+    switch(index)
+    {
+    case 0:
+        ui->labelMethod->setText("Метод верхней релаксации");
+        ui->labelMethodParametr->setText("С параметром ω = ");
+        break;
+    case 1:
+        ui->labelMethod->setText("Метод простой итерации");
+        ui->labelMethodParametr->setText("С параметром τ = ");
+        break;
+    case 2:
+        ui->labelMethod->setText("Метод минимальных невязок");
+        ui->labelMethodParametr->setText("С числом K = ");
+        break;
+    case 3:
+        ui->labelMethod->setText("Метод с чебышевским набором параметров");
+        ui->labelMethodParametr->setText("С числом K = ");
+        break;
+    case 4:
+        ui->labelMethod->setText("Метод сопряженных градиентов");
+        ui->labelMethodParametr->setText("С параметром ω = ");
+        break;
+    default:
+        break;
     }
 }
 

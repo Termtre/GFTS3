@@ -27,14 +27,116 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QWidget" name="gridLayoutWidget">
-       <layout class="QGridLayout" name="gridLayout_2"/>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>24</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>27</horstretch>
+               <verstretch>50</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="checkBox">
+                <property name="text">
+                 <string>Отображение сетки</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QComboBox" name="comboBox_3">
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Точное решение</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Начальное приближение</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Численное решение</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Разность точного и численного решений</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="gridLayoutWidget_2">
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0">
+        <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget">
+          <property name="tabPosition">
+           <enum>QTabWidget::North</enum>
+          </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
+          </property>
+          <property name="elideMode">
+           <enum>Qt::ElideNone</enum>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -59,14 +161,66 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
-            <string>Таблица</string>
+            <string>Таблицы</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item row="0" column="0">
-             <widget class="QTableWidget" name="tableWidget">
-              <attribute name="horizontalHeaderVisible">
-               <bool>true</bool>
-              </attribute>
+             <widget class="QTabWidget" name="tabWidget_2">
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <widget class="QWidget" name="tab_4">
+               <attribute name="title">
+                <string>Точное решение</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_10">
+                <item row="0" column="0">
+                 <widget class="QTableWidget" name="tableWidget">
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::NoEditTriggers</set>
+                  </property>
+                  <attribute name="horizontalHeaderVisible">
+                   <bool>true</bool>
+                  </attribute>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_5">
+               <attribute name="title">
+                <string>Численное решение</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_11">
+                <item row="0" column="0">
+                 <widget class="QTableWidget" name="tableWidget_2"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_6">
+               <attribute name="title">
+                <string>Разность точного и численного решений</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_12">
+                <item row="0" column="0">
+                 <widget class="QTableWidget" name="tableWidget_3"/>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -75,6 +229,596 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <attribute name="title">
             <string>Справка</string>
            </attribute>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <property name="verticalSpacing">
+             <number>0</number>
+            </property>
+            <item row="7" column="0">
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="15" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_18">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Задача решена с погрешностью ε&lt;sub&gt;1&lt;/sub&gt; =</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_Eps1">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="11" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_15">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Достигнута точность итерационного метода ε&lt;sup&gt;(N)&lt;/sup&gt; = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_EpsN">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="13" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_17">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Для невязки СЛАУ использована норма: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_9">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>max</string>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="14" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Тестовая задача должна быть решена с погрешностью не более ε = 0.5⋅10&lt;sup&gt;–6&lt;/sup&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_16">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Схема (СЛАУ) решена с невязкой ||R&lt;sup&gt;(N)&lt;/sup&gt;|| = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_RN">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QLabel" name="label_6">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Число разбиений по x n = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_n">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="16" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Максимальное отклонение точного и численного решений наблюдается в узле:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Число разбиений по y m = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_m">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="8" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_10">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Критерий остановки по точности ε&lt;sub&gt;мет&lt;/sub&gt; = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_epsmet">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <spacer name="horizontalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="9" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_13">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Критерий остановки по числу итераций N&lt;sub&gt;max&lt;/sub&gt; = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_Nmax">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="19" column="0" colspan="2">
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <item>
+               <widget class="QLabel" name="label_21">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Невязка СЛАУ на начальном приближении ||R&lt;sup&gt;(0)&lt;/sup&gt;|| = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_R0">
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="10" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_14">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>На решение схемы (СЛАУ) затрачено итераций N = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_N">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="5" column="0">
+             <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="18" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_20">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>В качестве начального приближения использовано: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_12">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="17" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_14">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <spacer name="horizontalSpacer_11">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_19">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>x = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_MaxX">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>y = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_MaxY">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="6" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="labelMethodParametr">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>С параметром ω = </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="edit_parametr">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="frame">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="labelMethod">
+              <property name="font">
+               <font>
+                <pointsize>13</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Метод верхней релаксации</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelTypeTask">
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Тестовая задача</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -94,7 +838,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string/>
       </property>
       <property name="flat">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="1" column="9">
