@@ -1,4 +1,4 @@
-#include "../includes/template_class.h"
+﻿#include "../includes/template_class.h"
 
 
 

@@ -1,7 +1,7 @@
-#include "../includes/template_class.h"
+п»ї#include "../includes/template_class.h"
 
 
-void Ax_b::M_R_M_no_input() // x0 - по стандарту (0,0,...,0,1)
+void Ax_b::M_R_M_no_input() // x0 - РїРѕ СЃС‚Р°РЅРґР°СЂС‚Сѓ (0,0,...,0,1)
 {
 	double* x0 = new double[n];
 
@@ -14,13 +14,13 @@ void Ax_b::M_R_M_no_input() // x0 - по стандарту (0,0,...,0,1)
 	M_R_M(x0);
 }
 
-void Ax_b::M_R_M(double* x0) // Метод Минимальных Невязок
+void Ax_b::M_R_M(double* x0) // РњРµС‚РѕРґ РњРёРЅРёРјР°Р»СЊРЅС‹С… РќРµРІСЏР·РѕРє
 {
 
 
 
 	double* x_prev = x0;
-	r = a_minus_b(A_x(x0), b);  // r = A*x0 - b  , где x0 - начальное приближение.   Далее x0 - приближение (step)
+	r = a_minus_b(A_x(x0), b);  // r = A*x0 - b  , РіРґРµ x0 - РЅР°С‡Р°Р»СЊРЅРѕРµ РїСЂРёР±Р»РёР¶РµРЅРёРµ.   Р”Р°Р»РµРµ x0 - РїСЂРёР±Р»РёР¶РµРЅРёРµ (step)
 
 	cout << endl << "//---[ Minimum Residual Method ]---//" << endl << "step=0" << endl << "  >>| ||r(0)|| = " << norma(r) << endl << endl << endl;
 
@@ -29,9 +29,9 @@ void Ax_b::M_R_M(double* x0) // Метод Минимальных Невязок
 	while (epsilon <= my_epsilon && step <= N)
 	{
 
-		t_ = scalar_multiplication(A_x(r), r) / scalar_multiplication(A_x(r), A_x(r));         // е_ = (Ar,r)/(Ar,Ar)
+		t_ = scalar_multiplication(A_x(r), r) / scalar_multiplication(A_x(r), A_x(r));         // Рµ_ = (Ar,r)/(Ar,Ar)
 
-		x0 = a_minus_b(x0, var_x(t_, r));   // x0[step] = x0[step-1] - t_ * r[step-1]   , где x0 - приближение, t_ - постоянное число метода (по оценке собств. чисел), r - невязка
+		x0 = a_minus_b(x0, var_x(t_, r));   // x0[step] = x0[step-1] - t_ * r[step-1]   , РіРґРµ x0 - РїСЂРёР±Р»РёР¶РµРЅРёРµ, t_ - РїРѕСЃС‚РѕСЏРЅРЅРѕРµ С‡РёСЃР»Рѕ РјРµС‚РѕРґР° (РїРѕ РѕС†РµРЅРєРµ СЃРѕР±СЃС‚РІ. С‡РёСЃРµР»), r - РЅРµРІСЏР·РєР°
 
 		r = a_minus_b(A_x(x0), b);        // r[step] = A*x0[step] - b
 
