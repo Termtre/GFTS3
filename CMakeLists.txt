@@ -1,20 +1,16 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.8.0)
 
 project(GFTS3)
 
+file(GLOB library_sources numeric_method/*.cpp)
+
 add_library(numeric_method STATIC
-    numeric_method/Matrix_solver.cpp
-    numeric_method/MWR.cpp
+    ${library_sources}
 )
 
-set(project_sources
-    src/main.cpp
-)
+file(GLOB project_sources src/*.cpp)
 
-set(project_headers
-    include/Matrix_solver.h
-    include/MWR.h
-)
+file(GLOB project_headers include/*.h)
 
 set(project_compile_flags "-march=native -O2 ")
 

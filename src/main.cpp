@@ -1,63 +1,81 @@
 #include <iostream>
 #include <thread>
+#include <atomic>
+#include <chrono>
+#include <vector>
+#include <memory>
 
 #include "../include/MWR.h"
 
 struct ThreadInput
 {
-    numeric_method::Matrix_solver& sN;
-    numeric_method::Matrix_solver& s2N;
-    const size_t n, m;
-    const size_t Nmax;
     const double Emet;
+    const size_t Nmax;
 
-    size_t count;
-    double eps;
+    std::unique_ptr<numeric_method::Matrix_solver> s;
+    size_t count = 0;
 
-    double accuracy() const
-    {
-        const numeric_method::Matrix& vN  =  *sN.get_v();
-        const numeric_method::Matrix& v2N = *s2N.get_v();
+    ThreadInput(std::unique_ptr<numeric_method::Matrix_solver>&& _s)
+    :Emet(0.000000005),
+     Nmax(100000),
+     s(std::move(_s))
+    {};
 
-        double eps = 0;
-        for(size_t i = 1; i < sN.n; ++i)
-            for(size_t j = 1; j < sN.m; ++j)
-                eps = std::max(eps, std::abs(vN[i][j] - v2N[2*i][2*j]));
-        return eps;
-    };
+    ThreadInput(const double _Emet, const size_t _Nmax, std::unique_ptr<numeric_method::Matrix_solver>&& _s)
+    :Emet(_Emet),
+    Nmax(_Nmax),
+    s(std::move(_s))
+    {};
 };
 
-void threadFunction (ThreadInput& param)
+void ThreadFunction (ThreadInput& p)
 {
-    double eps = param.Emet + 1.0;
-    size_t count = 0;
-    for(; eps > param.Emet && count < param.Nmax; eps = param.accuracy(), ++count)
-    {
-        numeric_method::solve(param.sN);
-        numeric_method::solve(param.s2N);
-    }
-    param.eps = eps;
-    param.count = count;
+    p.count = numeric_method::solve( *(p.s), p.Emet, p.Nmax);
 };
 
 int main(int argc, char ** argv)
 {
-    const size_t n = 80, m = 80;
-    const double Emet = 0.0000005;
-    const size_t Nmax = 10000;
+    const size_t n = 10, m = 10;
+    const int core = 4;
+    std::vector<ThreadInput> task;
+    std::vector<std::thread> solvers(core);
 
-    numeric_method::MWR sN(n,m);
-    numeric_method::MWR s2N(2*n,2*m);
+    task.push_back(ThreadInput(std::make_unique<numeric_method::MWR>(n,m)));
+    task.push_back(ThreadInput(std::make_unique<numeric_method::MWR>(n,m,numeric_method::test{}) ));
+    task.push_back(ThreadInput(std::make_unique<numeric_method::MWR>(2*n,2*m)));
 
-    ThreadInput MWR_param{.sN = sN, .s2N = s2N, .n = n, .m = m, .Nmax = Nmax, .Emet = Emet};
+    for(size_t i = 0; i <= task.size()/core ; ++i)
+    {
+        int n = 0;
+        for(size_t j = 0; j < core && i * core + j < task.size(); ++j, ++n)
+            solvers[j] = std::thread(ThreadFunction,std::ref(task[i * core + j]));
 
-    std::thread MWR_method(threadFunction, std::ref(MWR_param));
-    //TODO add own method to another thread
+        for(size_t j = 0; j < n; ++j)
+            solvers[j].join();
+    }
 
-    MWR_method.join();
+    numeric_method::Matrix err (n + 1, std::vector<double>(m + 1, 0.0));
+    numeric_method::Matrix err_test (n + 1, std::vector<double>(m + 1, 0.0));
+    for(size_t i = 1; i < n; ++i)
+        for(size_t j = 1; j < m; ++j)
+        {
+            err[i][j] = task[0].s->v[i][j] - task[2].s->v[2*i][2*j]; // @warning
+            const double tmp = std::sin(numeric_method::pi * i * j / (n * m));
+            err_test[i][j] = task[1].s->v[i][j] - std::exp(tmp * tmp);
+        }
 
     std::cout << std::scientific;
 
-    std::cout << MWR_param.count << '\n' << MWR_param.eps;
+    double eps = 0.0;
+    double eps_test = 0.0;
+    for(size_t i = 0; i < n + 1; ++i)
+    {
+        for(size_t j = 0; j < m + 1; ++j)
+        {
+            eps = std::max(eps,err[i][j]);
+            eps_test = std::max(eps_test,err_test[i][j]);
+        }
+    }
+    std::cout << eps << '\t' << eps_test;
     return 0;
 }
