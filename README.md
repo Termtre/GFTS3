@@ -4,4 +4,5 @@
 РЕШЕНИЕ ЗАДАЧИ ДИРИХЛЕ ДЛЯ УРАВНЕНИЯ ПУАССОНА
 
 ## Тестовый интерфейс Windows
-![image](https://github.com/Termtre/GFTS3/assets/95123992/98199a22-ca89-451a-a81f-7775b168c4ec)
+![image](https://github.com/Termtre/GFTS3/assets/95123992/c7ff67bc-9992-4c33-aafd-b7d2f2e2279c)
+

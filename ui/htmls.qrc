@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/htmls">
+        <file>urls/maintask.html</file>
+        <file>urls/testtask.html</file>
+    </qresource>
+</RCC>
