@@ -34,20 +34,19 @@ void MainWindow::on_start_clicked()
 {
     if (series) surfaceGraph->removeSeries(series);
     series = nullptr;
-    matrix.resize(rows);
-
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
-    {
-        it->resize(columns);
-    }
-
-    fillMatrix();
 
     ui->progressBar->reset();
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum((rows - 1) * (columns - 1));
+
     ui->tableWidget->setRowCount(rows);
     ui->tableWidget->setColumnCount(columns);
+
+    ui->tableWidget_2->setRowCount(rows);
+    ui->tableWidget_2->setColumnCount(columns);
+
+    ui->tableWidget_3->setRowCount(rows);
+    ui->tableWidget_3->setColumnCount(columns);
 
     QStringList horizontalLabels;
     QStringList verticalLabels;
@@ -63,9 +62,9 @@ void MainWindow::on_start_clicked()
 
         for (int j = 0; j < columns; j++)
         {
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(matrix[i][j])));
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(i * j)));
             ui->progressBar->setValue(i * columns + j);
-            newRow << QSurfaceDataItem(matrix[i][j], float(j), float(i));
+            newRow << QSurfaceDataItem(float(i * j * i * j), float(j), float(i));
         }
 
         dataArray << newRow;
@@ -153,7 +152,7 @@ void MainWindow::on_editRows_editingFinished()
 
     flagRows = true;
 
-    if (flagRows && flagColumns) ui->start->setEnabled(true);
+    if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
 }
 
 
@@ -196,20 +195,8 @@ void MainWindow::on_editColumns_editingFinished()
 
     flagColumns = true;
 
-    if (flagRows && flagColumns) ui->start->setEnabled(true);
+    if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
 }
-
-void MainWindow::fillMatrix()
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            matrix[i][j] = i * j;
-        }
-    }
-}
-
 
 void MainWindow::on_checkBox_clicked(bool checked)
 {
@@ -246,5 +233,97 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     default:
         break;
     }
+}
+
+void MainWindow::testMWR()
+{
+
+}
+
+void MainWindow::mainMWR()
+{
+
+}
+
+
+void MainWindow::on_epsEdit_editingFinished()
+{
+    bool ok;
+    ui->epsEdit->text().toDouble(&ok);
+
+    if (ok == false)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Ошибка");
+        msgBox.setText("Недопустимые символы");
+        msgBox.exec();
+
+        ui->start->setEnabled(false);
+
+        flagEps = false;
+
+        return;
+    }
+
+    Eps = ui->epsEdit->text().toInt();
+
+    if (Eps < 0.)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Ошибка");
+        msgBox.setText("Точность не может быть отрицательной");
+        msgBox.exec();
+
+        flagEps = false;
+
+        ui->start->setEnabled(false);
+
+        return;
+    }
+
+    flagEps = true;
+
+    if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
+}
+
+
+void MainWindow::on_NmaxEdit_editingFinished()
+{
+    bool ok;
+    ui->NmaxEdit->text().toInt(&ok);
+
+    if (ok == false)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Ошибка");
+        msgBox.setText("Недопустимые символы");
+        msgBox.exec();
+
+        ui->start->setEnabled(false);
+
+        flagNmax = false;
+
+        return;
+    }
+
+    NMax = ui->NmaxEdit->text().toInt();
+
+    if (NMax < 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Ошибка");
+        msgBox.setText("Максимальное количество итераций не может быть меньше 0");
+        msgBox.exec();
+
+        flagNmax = false;
+
+        ui->start->setEnabled(false);
+
+        return;
+    }
+
+    flagNmax = true;
+
+    if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
 }
 
