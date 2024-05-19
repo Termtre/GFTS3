@@ -5,12 +5,14 @@ static const double PI = 3.14159265358979323846;
 
 double U(double x, double y)
 {
-    return exp(sin(2. * PI * x * y));
+    double temp = sin(PI * x * y);
+    return exp(temp * temp);
 }
 
 double f(double x, double y)
 {
-    return pow(sin(PI * x * y), 2.);
+    double temp = sin(PI * x * y);
+    return temp * temp;
 }
 
 double mu1(double y)
