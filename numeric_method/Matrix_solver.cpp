@@ -3,6 +3,7 @@
 namespace numeric_method
 {
 
+
 Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     :n(_n), m(_m),
     v(_n + 1, std::vector<double>(_m + 1)),
