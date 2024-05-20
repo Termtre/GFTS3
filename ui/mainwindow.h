@@ -47,14 +47,10 @@ private:
     double Eps = 0.0001;
 
     Q3DSurface* surfaceGraph = nullptr;
-    QSurface3DSeries *series = nullptr;
-    QSurface3DSeries *begin = nullptr;
-    QSurface3DSeries *halfSteps = nullptr;
-    QSurface3DSeries *error = nullptr;
-    QSurface3DSeries* surfaces[5];
+    QSurface3DSeries* surfaces[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
 private:
-    void uiMWR();
+    void uiMWR(std::vector<QSurfaceDataArray>&);
 
 private:
     Ui::MainWindow *ui;

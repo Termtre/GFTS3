@@ -22,7 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->textBrowser->setSource(QUrl("qrc:/htmls/urls/testtask.html"), QTextDocument::HtmlResource);
 
-    ui->tableWidget_2->hide();
+    surfaceGraph->setAxisX(new QValue3DAxis);
+    surfaceGraph->setAxisY(new QValue3DAxis);
+    surfaceGraph->setAxisZ(new QValue3DAxis);
+
+    //ui->tableWidget_2->hide();
 }
 
 MainWindow::~MainWindow()
@@ -32,8 +36,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_start_clicked()
 {
-    if (series) surfaceGraph->removeSeries(series);
-    series = nullptr;
+    if (surfaces[0])
+    {
+        int temp = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
+
+        for (int i = 0; i < temp; i++)
+        {
+
+            surfaceGraph->removeSeries(surfaces[i]);
+        }
+
+        for (int i = 0; i < 5; i++)
+            surfaces[i] = nullptr;
+    }
 
     ui->progressBar->reset();
     ui->progressBar->setMinimum(0);
@@ -55,28 +70,40 @@ void MainWindow::on_start_clicked()
 
     for (int i = 0; i < rows; i++)
     {
-        horizontalLabels << QString::number(i);
         verticalLabels << QString::number(i);
-        // test
-        auto newRow = QSurfaceDataRow();
-
-        for (int j = 0; j < columns; j++)
-        {
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(i * j)));
-            ui->progressBar->setValue(i * columns + j);
-            newRow << QSurfaceDataItem(float(i), float(i * j), float(i));
-        }
-
-        dataArray << newRow;
     }
 
-    series = new QSurface3DSeries();
-    series->dataProxy()->resetArray(dataArray);
-
-    surfaceGraph->addSeries(series);
+    for (int j = 0; j < columns; j++)
+    {
+        horizontalLabels << QString::number(j);
+    }
 
     ui->tableWidget->setHorizontalHeaderLabels(horizontalLabels);
     ui->tableWidget->setVerticalHeaderLabels(verticalLabels);
+
+    ui->tableWidget_2->setHorizontalHeaderLabels(horizontalLabels);
+    ui->tableWidget_2->setVerticalHeaderLabels(verticalLabels);
+
+    ui->tableWidget_3->setHorizontalHeaderLabels(horizontalLabels);
+    ui->tableWidget_3->setVerticalHeaderLabels(verticalLabels);
+
+    int tempTemp = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
+
+    std::vector<QSurfaceDataArray> vecArray(tempTemp);
+
+    uiMWR(vecArray);
+
+    for (int i = 0; i < tempTemp; i++)
+    {
+        surfaces[i] = new QSurface3DSeries();
+        surfaces[i]->dataProxy()->resetArray(vecArray[i]);
+        surfaceGraph->addSeries(surfaces[i]);
+    }
+
+    for (int i = 0; i < (ui->comboBox_2->currentIndex() == 0 ? 4 : 5); i++)
+        surfaces[i]->setVisible(false);
+
+    surfaces[ui->comboBox_2->currentIndex()]->setVisible(true);
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
@@ -200,9 +227,9 @@ void MainWindow::on_editColumns_editingFinished()
 
 void MainWindow::on_checkBox_clicked(bool checked)
 {
-    if (!series) return;
-    if (checked) series->setWireframeColor(QColor(0, 0, 0, 255));
-    else series->setWireframeColor(QColor(0, 0, 0, 0));
+    //if (!series) return;
+    //if (checked) series->setWireframeColor(QColor(0, 0, 0, 255));
+    //else series->setWireframeColor(QColor(0, 0, 0, 0));
 }
 
 
@@ -319,29 +346,36 @@ void MainWindow::on_NmaxEdit_editingFinished()
 
 void MainWindow::on_comboBox_3_currentIndexChanged(int index)
 {
-    if(!series) return;
+    if(!surfaces[0]) return;
+
+    for (int i = 0; i < (ui->comboBox_2->currentIndex() == 0 ? 4 : 5); i++)
+        surfaces[i]->setVisible(false);
 
     switch (index)
     {
     case 0:
     {
-        series->setVisible(true);
+        surfaces[0]->setVisible(true);
         break;
     }
     case 1:
     {
+        surfaces[1]->setVisible(true);
         break;
     }
     case 2:
     {
+        surfaces[2]->setVisible(true);
         break;
     }
     case 3:
     {
+        surfaces[3]->setVisible(true);
         break;
     }
     case 4:
     {
+        surfaces[4]->setVisible(true);
         break;
     }
     }
