@@ -64,7 +64,7 @@ void MainWindow::on_start_clicked()
         {
             ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(i * j)));
             ui->progressBar->setValue(i * columns + j);
-            newRow << QSurfaceDataItem(float(i * j * i * j), float(j), float(i));
+            newRow << QSurfaceDataItem(float(i), float(i * j), float(i));
         }
 
         dataArray << newRow;
@@ -235,17 +235,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     }
 }
 
-void MainWindow::testMWR()
-{
-
-}
-
-void MainWindow::mainMWR()
-{
-
-}
-
-
 void MainWindow::on_epsEdit_editingFinished()
 {
     bool ok;
@@ -325,5 +314,36 @@ void MainWindow::on_NmaxEdit_editingFinished()
     flagNmax = true;
 
     if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
+}
+
+
+void MainWindow::on_comboBox_3_currentIndexChanged(int index)
+{
+    if(!series) return;
+
+    switch (index)
+    {
+    case 0:
+    {
+        series->setVisible(true);
+        break;
+    }
+    case 1:
+    {
+        break;
+    }
+    case 2:
+    {
+        break;
+    }
+    case 3:
+    {
+        break;
+    }
+    case 4:
+    {
+        break;
+    }
+    }
 }
 

@@ -4,7 +4,7 @@
 
 #include "../include/Task_manager.h"
 
-int main(int argc, char ** argv)
+void example()
 {
     const size_t n = 50, m = 50;
     const int core = 4;
@@ -49,5 +49,4 @@ int main(int argc, char ** argv)
 
     std::cout /*<< *sN_test */<< count <<", " << count_bigger << ", "<< eps << std::endl;
     std::cout /*<< *sN */<< count_test << ", "<<eps_test << std::endl;
-    return 0;
 }

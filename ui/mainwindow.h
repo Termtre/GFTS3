@@ -5,8 +5,6 @@
 #include <vector>
 #include <QtGraphs>
 
-using Matrix = std::vector<std::vector<float>>;
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -38,6 +36,8 @@ private slots:
 
     void on_NmaxEdit_editingFinished();
 
+    void on_comboBox_3_currentIndexChanged(int index);
+
 private:
     bool flagColumns = true, flagRows = true, flagNmax = true, flagEps = true;
 
@@ -48,10 +48,13 @@ private:
 
     Q3DSurface* surfaceGraph = nullptr;
     QSurface3DSeries *series = nullptr;
+    QSurface3DSeries *begin = nullptr;
+    QSurface3DSeries *halfSteps = nullptr;
+    QSurface3DSeries *error = nullptr;
+    QSurface3DSeries* surfaces[5];
 
 private:
-    void testMWR();
-    void mainMWR();
+    void uiMWR();
 
 private:
     Ui::MainWindow *ui;

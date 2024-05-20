@@ -11,7 +11,7 @@ using Matrix = std::vector<std::vector<double>>;
 struct test{};
 
 //@note 16 number, long double == double wtf (https://onlinegdb.com)
-constexpr double pi = std::atan(1.0) * 4;
+const double pi = std::atan(1.0) * 4;
 
 // abstract numerical method class
 class Matrix_solver
