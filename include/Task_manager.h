@@ -23,8 +23,10 @@ public:
      */
 #ifdef __APPLE__
     Task_manager(int core = 8);
-#elif
+#elif __WIN64
     Task_manager(int core = 6);
+#elif __linux__
+    Task_manager(int core = 4);
 #endif
 
     /**
