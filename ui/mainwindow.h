@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <vector>
 #include <QtGraphs>
-#include "..\include\Task_manager.h"
+#include "../include/Task_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

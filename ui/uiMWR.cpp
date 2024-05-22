@@ -138,7 +138,7 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
             }
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             array[i] << newRow[i];
         }

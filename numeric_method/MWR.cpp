@@ -37,7 +37,10 @@ double MWR::operator()(const size_t i, const size_t j) const
         f[i][j] +
         x_step_2 * (v[i + 1][j] + v[i - 1][j]) +
         y_step_2 * (v[i][j + 1] + v[i][j - 1])
-    );
-};
+                                            );
+}
+
+MWR::~MWR()
+{};
 
 }

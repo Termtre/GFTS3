@@ -95,6 +95,11 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
         for(size_t j = 1; j < m; ++j)
             v[i][j] = (v[i][m] * j - v[i][0] * j) / m; // linear interpolation along x
     };
+}
+
+Matrix_solver::~Matrix_solver()
+{
+
 };
 
 std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)

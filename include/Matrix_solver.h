@@ -27,6 +27,8 @@ public:
      */
     virtual double operator()(const size_t i, const size_t j) const = 0;
 
+    virtual ~Matrix_solver();
+
     /**
      * Getter for f
      *

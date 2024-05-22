@@ -21,7 +21,11 @@ public:
     /**
      * @param core number of core in system
      */
+#ifdef __APPLE__
+    Task_manager(int core = 8);
+#elif
     Task_manager(int core = 6);
+#endif
 
     /**
      * Method for push task in manager
