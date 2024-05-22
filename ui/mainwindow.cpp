@@ -22,11 +22,30 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->textBrowser->setSource(QUrl("qrc:/htmls/urls/testtask.html"), QTextDocument::HtmlResource);
 
+    surfaceGraph->setCameraZoomLevel(85.f);
+    surfaceGraph->setCameraPreset(QAbstract3DGraph::CameraPreset::IsometricRight);
+    surfaceGraph->activeTheme()->setType(Q3DTheme::Theme::Qt);
+
     surfaceGraph->setAxisX(new QValue3DAxis);
     surfaceGraph->setAxisY(new QValue3DAxis);
     surfaceGraph->setAxisZ(new QValue3DAxis);
 
-    //ui->tableWidget_2->hide();
+    surfaceGraph->axisX()->setLabelFormat("%.4f");
+    surfaceGraph->axisY()->setLabelFormat("%.4f");
+    surfaceGraph->axisZ()->setLabelFormat("%.4f");
+
+    surfaceGraph->axisX()->setLabelAutoRotation(30.f);
+    surfaceGraph->axisY()->setLabelAutoRotation(90.f);
+    surfaceGraph->axisZ()->setLabelAutoRotation(30.f);
+
+    for (int i = 0; i < 5; i++)
+    {
+        surfaces[i] = new QSurface3DSeries();
+        surfaceGraph->addSeries(surfaces[i]);
+    }
+
+    ui->checkBox->setChecked(true);
+    ui->checkBox_2->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -36,20 +55,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_start_clicked()
 {
-    if (surfaces[0])
-    {
-        int temp = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
-
-        for (int i = 0; i < temp; i++)
-        {
-
-            surfaceGraph->removeSeries(surfaces[i]);
-        }
-
-        for (int i = 0; i < 5; i++)
-            surfaces[i] = nullptr;
-    }
-
     ui->progressBar->reset();
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum((rows - 1) * (columns - 1));
@@ -65,8 +70,6 @@ void MainWindow::on_start_clicked()
 
     QStringList horizontalLabels;
     QStringList verticalLabels;
-    // test
-    auto dataArray = QSurfaceDataArray();
 
     for (int i = 0; i < rows; i++)
     {
@@ -87,20 +90,30 @@ void MainWindow::on_start_clicked()
     ui->tableWidget_3->setHorizontalHeaderLabels(horizontalLabels);
     ui->tableWidget_3->setVerticalHeaderLabels(verticalLabels);
 
-    int tempTemp = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
+    int numberOfGraphics = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
 
-    std::vector<QSurfaceDataArray> vecArray(tempTemp);
+    std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
 
-    uiMWR(vecArray);
-
-    for (int i = 0; i < tempTemp; i++)
+    for (auto it = vecArray.begin(); it != vecArray.end(); ++it)
     {
-        surfaces[i] = new QSurface3DSeries();
-        surfaces[i]->dataProxy()->resetArray(vecArray[i]);
-        surfaceGraph->addSeries(surfaces[i]);
+        it->reserve(rows);
     }
 
-    for (int i = 0; i < (ui->comboBox_2->currentIndex() == 0 ? 4 : 5); i++)
+    if (ui->comboBox_2->currentIndex() == 0)
+    {
+        taskTest(vecArray);
+    }
+    else
+    {
+        taskMain(vecArray);
+    }
+
+    for (int i = 0; i < numberOfGraphics; i++)
+    {
+        surfaces[i]->dataProxy()->resetArray(vecArray[i]);
+    }
+
+    for (int i = 0; i < numberOfGraphics; i++)
         surfaces[i]->setVisible(false);
 
     surfaces[ui->comboBox_2->currentIndex()]->setVisible(true);
@@ -224,14 +237,6 @@ void MainWindow::on_editColumns_editingFinished()
 
     if (flagRows && flagColumns && flagNmax && flagEps) ui->start->setEnabled(true);
 }
-
-void MainWindow::on_checkBox_clicked(bool checked)
-{
-    //if (!series) return;
-    //if (checked) series->setWireframeColor(QColor(0, 0, 0, 255));
-    //else series->setWireframeColor(QColor(0, 0, 0, 0));
-}
-
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
@@ -378,6 +383,32 @@ void MainWindow::on_comboBox_3_currentIndexChanged(int index)
         surfaces[4]->setVisible(true);
         break;
     }
+    }
+}
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (checked && ui->checkBox_2->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
+        else if (checked && !ui->checkBox_2->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawWireframe);
+        else if (!checked && ui->checkBox_2->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawSurface);
+    }
+}
+
+void MainWindow::on_checkBox_2_clicked(bool checked)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (checked && ui->checkBox->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
+        else if (checked && !ui->checkBox->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawSurface);
+        else if (!checked && ui->checkBox->isChecked())
+            surfaces[i]->setDrawMode(QSurface3DSeries::DrawWireframe);
     }
 }
 

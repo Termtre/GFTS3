@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <vector>
 #include <QtGraphs>
+#include "..\include\Task_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,6 +39,8 @@ private slots:
 
     void on_comboBox_3_currentIndexChanged(int index);
 
+    void on_checkBox_2_clicked(bool checked);
+
 private:
     bool flagColumns = true, flagRows = true, flagNmax = true, flagEps = true;
 
@@ -46,11 +49,19 @@ private:
     int NMax = 10000;
     double Eps = 0.0001;
 
+    double aX = 0.;
+    double aY = 0.;
+    double bX = 1.;
+    double bY = 1.;
+
+    Task_manager manager;
+
     Q3DSurface* surfaceGraph = nullptr;
     QSurface3DSeries* surfaces[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
 private:
-    void uiMWR(std::vector<QSurfaceDataArray>&);
+    void taskTest(std::vector<QSurfaceDataArray>&);
+    void taskMain(std::vector<QSurfaceDataArray>&);
 
 private:
     Ui::MainWindow *ui;

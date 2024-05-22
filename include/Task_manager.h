@@ -21,7 +21,7 @@ public:
     /**
      * @param core number of core in system
      */
-    Task_manager(const int core);
+    Task_manager(int core = 6);
 
     /**
      * Method for push task in manager
