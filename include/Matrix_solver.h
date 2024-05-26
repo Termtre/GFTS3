@@ -37,6 +37,7 @@ public:
      */
 public:
     const size_t n, m;          ///< Numbers of grid splits
+    double eps = 0.0;           ///< Discrepancy
     Matrix v;                   ///< Container for numerical method solve
     const Matrix f;             ///< Right part of Dirichlet problem
 };

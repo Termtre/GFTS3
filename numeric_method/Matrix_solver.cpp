@@ -37,8 +37,12 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     for(size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
+        {
             v[i][j] = v[i][0]; // linear interpolation along y, can use v[0][j]!
+            eps = std::max(eps, std::abs(v[i][j] - f[i][j]));
+        }
     };
+
 
     //TODO check positive definite
 };
@@ -127,7 +131,7 @@ int solve(Matrix_solver & s, const double precision, const int N_max)
                 eps = std::max(eps, std::abs(v_new - s.v[i][j]));
                 s.v[i][j] = v_new;
             }
-
+        s.eps = eps;
         if(eps < precision)
             break;
     }
