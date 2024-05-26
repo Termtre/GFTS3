@@ -1,5 +1,5 @@
 #include "../include/MWR.h"
-#include <iostream>
+//#include <iostream>
 namespace numeric_method
 {
 
@@ -9,7 +9,7 @@ MWR::MWR(const size_t _n, const size_t _m)
     {
         //@see https://www.sciencedirect.com/science/article/pii/S0893965908001523
         const size_t N = (_n - 1) * (_m - 1) + 1;
-        return 2.0 / ( 1.0 + std::sin(pi / N));
+        return 2.0 / ( 1.0 + std::sin(pi / static_cast<double>(N)));
     }()),
     x_step_2( _n * _n ), y_step_2( _m * _m )
     {
@@ -23,7 +23,7 @@ MWR::MWR(const size_t _n, const size_t _m, numeric_method::test dummy)
     {
         //@see https://www.sciencedirect.com/science/article/pii/S0893965908001523
         const size_t N = (_n - 1) * (_m - 1) + 1;
-        return 2.0 / ( 1.0 + std::sin(pi / N));
+        return 2.0 / ( 1.0 + std::sin(pi / static_cast<double>(N)));
     }()),
     x_step_2( _n * _n ), y_step_2( _m * _m )
     {
