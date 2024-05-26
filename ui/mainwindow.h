@@ -62,6 +62,7 @@ private:
 private:
     void taskTest(std::vector<QSurfaceDataArray>&);
     void taskMain(std::vector<QSurfaceDataArray>&);
+    void task(std::vector<QSurfaceDataArray>&);
 
 private:
     Ui::MainWindow *ui;

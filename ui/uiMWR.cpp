@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QFuture>
+
 void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 {
     size_t n = rows - 1;
@@ -13,8 +15,15 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     double xMax = 0., yMax = 0.;
     double x, y;
 
-    manager.createTask(n, m, Numerical_method::MWR_TEST, Eps, NMax);
-    std::unique_ptr<numeric_method::Matrix_solver> sN_test = manager.returnTask(count1, Numerical_method::MWR_TEST);
+    QFuture<void> future;
+    std::unique_ptr<numeric_method::Matrix_solver> sN_test;
+
+    future = QtConcurrent::run([&]{
+        manager.createTask(n, m, Numerical_method::MWR_TEST, Eps, NMax);
+        sN_test = manager.returnTask(count1, Numerical_method::MWR_TEST);
+        ;});
+
+    future.waitForFinished();
 
     double stepX = (bX - aX) / static_cast<double>(n);
     double stepY = (bY - aY) / static_cast<double>(m);

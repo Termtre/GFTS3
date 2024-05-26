@@ -9,15 +9,22 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../numeric_method/MMR.cpp \
+    ../numeric_method/MSI.cpp \
     ../numeric_method/MWR.cpp \
     ../numeric_method/Matrix_solver.cpp \
     ../src/Task_manager.cpp \
     ../src/instruction.cpp \
     main.cpp \
     mainwindow.cpp \
+    taskChoice.cpp \
     uiMWR.cpp
 
 HEADERS += \
+    ../include/MCG.h \
+    ../include/MCP.h \
+    ../include/MMR.h \
+    ../include/MSI.h \
     ../include/MWR.h \
     ../include/Matrix_solver.h \
     ../include/Task_manager.h \

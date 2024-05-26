@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+//#include <QFuture>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     surfaceGraph->setCameraZoomLevel(85.f);
     surfaceGraph->setCameraPreset(QAbstract3DGraph::CameraPreset::IsometricRight);
-    surfaceGraph->activeTheme()->setType(Q3DTheme::Theme::Qt);
+    surfaceGraph->activeTheme()->setType(Q3DTheme::Theme::PrimaryColors);
 
     surfaceGraph->setAxisX(new QValue3DAxis);
     surfaceGraph->setAxisY(new QValue3DAxis);
@@ -99,14 +100,20 @@ void MainWindow::on_start_clicked()
         it->reserve(rows);
     }
 
+    //QFuture<void> future;
+
     if (ui->comboBox_2->currentIndex() == 0)
     {
         taskTest(vecArray);
+        //future = QtConcurrent::run([&]{taskTest(vecArray);});
     }
     else
     {
         taskMain(vecArray);
+        //future = QtConcurrent::run([&]{taskMain(vecArray);});
     }
+
+    //future.waitForFinished();
 
     for (int i = 0; i < numberOfGraphics; i++)
     {
@@ -116,7 +123,7 @@ void MainWindow::on_start_clicked()
     for (int i = 0; i < numberOfGraphics; i++)
         surfaces[i]->setVisible(false);
 
-    surfaces[ui->comboBox_2->currentIndex()]->setVisible(true);
+    surfaces[ui->comboBox_3->currentIndex()]->setVisible(true);
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
@@ -286,7 +293,7 @@ void MainWindow::on_epsEdit_editingFinished()
         return;
     }
 
-    Eps = ui->epsEdit->text().toInt();
+    Eps = ui->epsEdit->text().toDouble();
 
     if (Eps < 0.)
     {
