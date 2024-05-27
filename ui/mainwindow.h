@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <vector>
 #include <QtGraphs>
+#include <QThread>
 #include "../include/Task_manager.h"
 
 QT_BEGIN_NAMESPACE
@@ -11,6 +12,8 @@ namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+class Calculator;
 
 class MainWindow : public QMainWindow
 {
@@ -22,6 +25,8 @@ public:
 
 private slots:
     void on_start_clicked();
+
+    void on_end_clicked(const Numerical_method method);
 
     void on_comboBox_2_currentIndexChanged(int index);
 
@@ -59,12 +64,32 @@ private:
     Q3DSurface* surfaceGraph = nullptr;
     QSurface3DSeries* surfaces[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
+
 private:
     void taskTest(std::vector<QSurfaceDataArray>&);
     void taskMain(std::vector<QSurfaceDataArray>&);
-    void task(std::vector<QSurfaceDataArray>&);
+//    void task(std::vector<QSurfaceDataArray>&);
 
 private:
     Ui::MainWindow *ui;
+};
+
+class Calculator : public QObject
+{
+    Q_OBJECT
+public:
+    const Numerical_method method;
+    Task_manager & manager;
+public:
+    Calculator(const Numerical_method _method,Task_manager & _manager):
+    method(_method), manager(_manager)
+    {};
+    void task()
+    {
+        manager.wait_solution(method);
+        emit Complited(method);
+    };
+signals:
+    void Complited(const Numerical_method method);
 };
 #endif // MAINWINDOW_H
