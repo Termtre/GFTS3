@@ -8,6 +8,9 @@ add_library(numeric_method STATIC
     ${library_sources}
 )
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Graphs)
 
 set(CMAKE_AUTOMOC ON)

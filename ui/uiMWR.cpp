@@ -5,37 +5,26 @@
 
 void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 {
-    size_t n = rows - 1;
-    size_t m = columns - 1;
+    const size_t n = rows - 1;
+    const size_t m = columns - 1;
 
-    size_t count = 0, count1 = 0;
+    size_t count = 0;
 
     double epsMax = 0.0;
     double err;
     double xMax = 0., yMax = 0.;
     double x, y;
 
-    QFuture<void> future;
-    std::unique_ptr<numeric_method::Matrix_solver> sN_test;
+    std::unique_ptr<numeric_method::Matrix_solver> sN_test = std::make_unique<numeric_method::MWR>(n,m,numeric_method::test{});
 
-    future = QtConcurrent::run([&]{
-        manager.createTask(n, m, Numerical_method::MWR_TEST, Eps, NMax);
-        sN_test = manager.returnTask(count1, Numerical_method::MWR_TEST);
-        ;});
-
-    future.waitForFinished();
-
-    double stepX = (bX - aX) / static_cast<double>(n);
-    double stepY = (bY - aY) / static_cast<double>(m);
+    const double stepX = (bX - aX) / static_cast<double>(n);
+    const double stepY = (bY - aY) / static_cast<double>(m);
 
     for(size_t i = 0; i < n + 1; ++i)
     {
-        QSurfaceDataRow newRow[4];
+        QSurfaceDataRow newRow;
 
-        for (int i = 0; i < 4; i++)
-        {
-            newRow[i].reserve(m + 1);
-        }
+        newRow.reserve(m+1);
 
         x = qMin(bX, i * stepX);
 
@@ -45,8 +34,35 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
             y = qMin(bY, j * stepY);
 
+            newRow.append(QSurfaceDataItem(y, sN_test->v[i][j], x));
 
-            double tmp = std::sin(numeric_method::pi * static_cast<double>(i * j) / static_cast<double>(n * m));
+
+        }
+        array[1] << newRow;
+    }
+    printf("%f\n", sN_test->calculate_residual());
+
+    sN_test = manager.returnTask(count, Numerical_method::MWR_TEST);
+
+    printf("%f\n", sN_test->calculate_residual());
+    printf("%f\n", sN_test->precision);
+    for(size_t i = 0; i < n + 1; ++i)
+    {
+        QSurfaceDataRow newRow[3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            newRow[i].reserve(m + 1);
+        }
+
+        x = qMin(bX, i * stepX);
+
+        for(size_t j = 0; j < m + 1; ++j)
+        {
+            y = qMin(bY, j * stepY);
+
+            double tmp = std::sin(numeric_method::pi * i * j * stepX * stepY);
+
             tmp = std::exp(tmp * tmp);
 
             err = sN_test->v[i][j] - tmp;
@@ -55,9 +71,8 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
             ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err)));
 
             newRow[0].append(QSurfaceDataItem(y, tmp, x));
-            newRow[1].append(QSurfaceDataItem(y, 0., x));
-            newRow[2].append(QSurfaceDataItem(y, sN_test->v[i][j], x));
-            newRow[3].append(QSurfaceDataItem(y, abs(err), x));
+            newRow[1].append(QSurfaceDataItem(y, sN_test->v[i][j], x));
+            newRow[2].append(QSurfaceDataItem(y, abs(err), x));
 
             if (epsMax < abs(err))
             {
@@ -68,10 +83,9 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
             }
         }
 
-        for (int i = 0; i < 4; i++)
-        {
-            array[i] << newRow[i];
-        }
+        array[0] << newRow[0];
+        array[2] << newRow[1];
+        array[3] << newRow[2];
     }
 
     ui->edit_n->setText(QString::number(n));
@@ -80,7 +94,7 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     ui->edit_epsmet->setText(QString::number(Eps, 'g', 10));
     ui->edit_Nmax->setText(QString::number(NMax));
 
-    ui->edit_N->setText(QString::number(count1));
+    ui->edit_N->setText(QString::number(count));
     ui->edit_Eps1->setText(QString::number(epsMax));
 
     ui->edit_MaxX->setText(QString::number(xMax));
@@ -89,8 +103,8 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
 void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 {
-    size_t n = rows - 1;
-    size_t m = columns - 1;
+    const size_t n = rows - 1;
+    const size_t m = columns - 1;
 
     size_t count = 0, count1 = 0;
 
@@ -99,19 +113,53 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
     double xMax = 0., yMax = 0.;
     double x, y;
 
-    manager.createTask(n, m, Numerical_method::MWR_MAIN, Eps, NMax);
-    manager.createTask(n, m, Numerical_method::MWR_BIGGER, Eps, NMax);
-    std::unique_ptr<numeric_method::Matrix_solver> s2N = manager.returnTask(count1, Numerical_method::MWR_BIGGER);
-    std::unique_ptr<numeric_method::Matrix_solver> sN = manager.returnTask(count, Numerical_method::MWR_MAIN);
+    std::unique_ptr<numeric_method::Matrix_solver> sN = std::make_unique<numeric_method::MWR>(n,m);
+    std::unique_ptr<numeric_method::Matrix_solver> s2N = std::make_unique<numeric_method::MWR>(2 * n,2 * m);
 
-    double stepX = (bX - aX) / static_cast<double>(n);
-    double stepY = (bY - aY) / static_cast<double>(m);
+    const double stepX = (bX - aX) / static_cast<double>(n);
+    const double stepY = (bY - aY) / static_cast<double>(m);
 
     for(size_t i = 0; i < n + 1; ++i)
     {
-        QSurfaceDataRow newRow[5];
+        QSurfaceDataRow newRow[2];
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 2; i++)
+        {
+            newRow[i].reserve(m + 1);
+        }
+
+        x = qMin(bX, static_cast<double>(i) * stepX);
+
+        for(size_t j = 0; j < m + 1; ++j)
+        {
+            y = qMin(bY, static_cast<double>(j) * stepY);
+
+            newRow[0].append(QSurfaceDataItem(y, sN->v[i][j], x));
+            newRow[1].append(QSurfaceDataItem(y, s2N->v[2 * i][2 * j], x));
+
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            array[i] << newRow[i];
+        }
+    }
+
+    printf("%f\n", sN->calculate_residual());
+    printf("%f\n", s2N->calculate_residual());
+
+    sN = manager.returnTask(count, Numerical_method::MWR_MAIN);
+    s2N = manager.returnTask(count1, Numerical_method::MWR_BIGGER);
+
+    printf("%f\n", sN->calculate_residual());
+    printf("%f\n", s2N->calculate_residual());
+    printf("%f\n", sN->precision);
+    printf("%f\n", s2N->precision);
+    for(size_t i = 0; i < n + 1; ++i)
+    {
+        QSurfaceDataRow newRow[3];
+
+        for (int i = 0; i < 3; i++)
         {
             newRow[i].reserve(m + 1);
         }
@@ -132,11 +180,9 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 
             ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err)));
 
-            newRow[0].append(QSurfaceDataItem(y, 0., x));
-            newRow[1].append(QSurfaceDataItem(y, 0., x));
-            newRow[2].append(QSurfaceDataItem(y, sN->v[i][j], x));
-            newRow[3].append(QSurfaceDataItem(y, s2N->v[i * 2][j * 2], x));
-            newRow[4].append(QSurfaceDataItem(y, err, x));
+            newRow[0].append(QSurfaceDataItem(y, sN->v[i][j], x));
+            newRow[1].append(QSurfaceDataItem(y, s2N->v[i * 2][j * 2], x));
+            newRow[2].append(QSurfaceDataItem(y, err, x));
 
             if (epsMax < abs(err))
             {
@@ -147,9 +193,9 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
             }
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
-            array[i] << newRow[i];
+            array[i + 2] << newRow[i];
         }
     }
 
@@ -159,7 +205,7 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
     ui->edit_epsmet->setText(QString::number(Eps, 'g', 10));
     ui->edit_Nmax->setText(QString::number(NMax));
 
-    ui->edit_N->setText(QString::number(count1));
+    ui->edit_N->setText(QString::number(std::max(count1,count)));
     ui->edit_Eps1->setText(QString::number(epsMax));
 
     ui->edit_MaxX->setText(QString::number(xMax));

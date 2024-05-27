@@ -6,6 +6,7 @@ namespace numeric_method
 
 Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     :n(_n), m(_m),
+    precision(0.0),
     v(_n + 1, std::vector<double>(_m + 1)),
     f([&]()
     {
@@ -14,7 +15,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
             for(size_t j = 1; j < _m; ++j)
             {
                 const double tmp = std::sin(pi * i * j / ((_n + 1) * (_m + 1)));
-                ret[i][j] = tmp * tmp; // maybe need change sign @see positive definite
+                ret[i][j] = - tmp * tmp; // maybe need change sign @see positive definite
             }
         return ret;
     }()
@@ -39,7 +40,6 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
         for(size_t j = 1; j < m; ++j)
         {
             v[i][j] = v[i][0]; // linear interpolation along y, can use v[0][j]!
-            eps = std::max(eps, std::abs(v[i][j] - f[i][j]));
         }
     };
 
@@ -50,6 +50,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
 
 Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
     :n(_n), m(_m),
+    precision(0.0),
     v(_n + 1, std::vector<double>(_m + 1)),
     f([&]()
     {
@@ -97,13 +98,28 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
     for(size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
-            v[i][j] = (v[i][m] * j - v[i][0] * j) / m; // linear interpolation along x
+            v[i][j] = (v[i][0] * (m + 1  - j) + v[i][m] * j) / (m + 1); // linear interpolation along x
     };
 }
 
 Matrix_solver::~Matrix_solver()
 {
 
+};
+
+double Matrix_solver::calculate_residual() const
+{
+    double eps = 0.0;
+    for (size_t i = 1; i < n; ++i)
+    {
+        for(size_t j = 1; j < m; ++j)
+            eps = std::max(eps,std::abs(
+                (v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * n * n +
+                (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m +
+                f[i][j]
+            ));
+    }
+    return eps;
 };
 
 std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)
@@ -121,9 +137,10 @@ std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)
 int solve(Matrix_solver & s, const double precision, const int N_max)
 {
     int N = 0;
+    double eps;
     for(;N < N_max;++N)
     {
-        double eps = 0;
+        eps = 0.0;
         for(size_t i = 1; i < s.n; ++i)
             for(size_t j = 1; j < s.m; ++j)
             {
@@ -131,11 +148,10 @@ int solve(Matrix_solver & s, const double precision, const int N_max)
                 eps = std::max(eps, std::abs(v_new - s.v[i][j]));
                 s.v[i][j] = v_new;
             }
-        s.eps = eps;
         if(eps < precision)
             break;
     }
-
+    s.precision = eps;
     return N;
 };
 }

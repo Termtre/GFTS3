@@ -48,7 +48,12 @@ public:
      */
     std::unique_ptr<numeric_method::Matrix_solver> returnTask(size_t & count, const Numerical_method method);
 
-    ~Task_manager();
+    /**
+     * Procedure of waiting solution for specific method
+     */
+    void wait_solution(const Numerical_method method) const;
+
+    virtual ~Task_manager();
 private:
     /**
      * Method for find free calculation thread
