@@ -112,6 +112,7 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     ui->lineEdit_12->setText("Линейная интерполяция вдоль оси x");
 
     ui->label_8->setText("Тестовая задача должна быть решена с погрешностью не более ε = 0.5⋅10<sup>–6</sup>");
+    ui->label_11->setText("Максимальное отклонение точного и численного решений наблюдается в узле:");
 }
 
 void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
@@ -245,4 +246,5 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
     ui->lineEdit_12->setText("Линейная интерполяция вдоль оси y");
 
     ui->label_8->setText("Основная задача должна быть решена с погрешностью не более ε = 0.5⋅10<sup>–6</sup>");
+    ui->label_11->setText("Максимальное отклонение численных решений на основной сетке и\nсетке с половинным шагом в узле:");
 }
