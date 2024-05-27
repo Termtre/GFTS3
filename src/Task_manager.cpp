@@ -48,14 +48,19 @@ void Task_manager::createTask(const size_t n, const size_t m, const Numerical_me
     }
 
     solvers[find_free()].task = &(*task[i]);
-    };
+};
+
+void Task_manager::wait_solution(const Numerical_method method) const
+{
+    size_t i = static_cast<size_t>(method);
+    while(! (task[i]->calculated))
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+};
 
 std::unique_ptr<numeric_method::Matrix_solver> Task_manager::returnTask(size_t& count, const Numerical_method method)
 {
     size_t i = static_cast<size_t>(method);
-    while(! (task[i]->calculated))
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
+    wait_solution(method);
     count = task[i]->count;
     return std::move(task[i]->s);
 };
