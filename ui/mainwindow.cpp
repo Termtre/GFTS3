@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <utility>
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 //#include <QFuture>
@@ -47,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->checkBox->setChecked(true);
     ui->checkBox_2->setChecked(true);
+
+    ui->groupBox_N2->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -91,7 +94,67 @@ void MainWindow::on_start_clicked()
     ui->tableWidget_3->setHorizontalHeaderLabels(horizontalLabels);
     ui->tableWidget_3->setVerticalHeaderLabels(verticalLabels);
 
-    int numberOfGraphics = ui->comboBox_2->currentIndex() == 0 ? 4 : 5;
+    QThread * future = new QThread;
+    Calculator * calc;
+
+    if (ui->comboBox_2->currentIndex() == 0)
+    {
+         manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_TEST, Eps, NMax);
+         calc = new Calculator(Numerical_method::MWR_TEST,manager);
+    }
+    else
+    {
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_MAIN, Eps, NMax);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_BIGGER, Eps, 2 * NMax);
+        calc = new Calculator(Numerical_method::MWR_BIGGER,manager);
+    }
+
+    // int numberOfGraphics = (ui->comboBox_2->currentIndex() == 0) ? 4 : 5;
+    //
+    // std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
+    //
+    // for (auto it = vecArray.begin(); it != vecArray.end(); ++it)
+    // {
+    //     it->reserve(rows);
+    // }
+    //
+    // if (ui->comboBox_2->currentIndex() == 0)
+    // {
+    //     taskTest(vecArray);
+    // }
+    // else
+    // {
+    //     taskMain(vecArray);
+    // }
+    //
+    // for (int i = 0; i < numberOfGraphics; i++)
+    // {
+    //     surfaces[i]->dataProxy()->resetArray(vecArray[i]);
+    // }
+    //
+    // for (int i = 0; i < numberOfGraphics; i++)
+    //     surfaces[i]->setVisible(false);
+    //
+    // surfaces[ui->comboBox_3->currentIndex()]->setVisible(true);
+    //
+
+    calc->moveToThread(future);
+
+    connect (future, &QThread::started, calc, &Calculator::task);
+
+    connect (calc, &Calculator::Complited, this, &MainWindow::on_end_clicked);
+    connect (calc, &Calculator::Complited, future, &QThread::quit);
+    connect (calc, &Calculator::Complited, calc, &Calculator::deleteLater);
+    connect (future, &QThread::finished, future, &QThread::deleteLater);
+
+    future->start();
+
+}
+
+
+ void MainWindow::on_end_clicked(const Numerical_method method)
+{
+    int numberOfGraphics = (method == Numerical_method::MWR_TEST) ? 4 : 5;
 
     std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
 
@@ -100,20 +163,14 @@ void MainWindow::on_start_clicked()
         it->reserve(rows);
     }
 
-    //QFuture<void> future;
-
-    if (ui->comboBox_2->currentIndex() == 0)
+    if (method == Numerical_method::MWR_TEST)
     {
         taskTest(vecArray);
-        //future = QtConcurrent::run([&]{taskTest(vecArray);});
     }
     else
     {
         taskMain(vecArray);
-        //future = QtConcurrent::run([&]{taskMain(vecArray);});
     }
-
-    //future.waitForFinished();
 
     for (int i = 0; i < numberOfGraphics; i++)
     {
@@ -247,7 +304,7 @@ void MainWindow::on_editColumns_editingFinished()
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
-    switch(index)
+    switch(index) //TODO MAKE ENUM, pls
     {
     case 0:
         ui->labelMethod->setText("Метод верхней релаксации");
@@ -363,7 +420,7 @@ void MainWindow::on_comboBox_3_currentIndexChanged(int index)
     for (int i = 0; i < (ui->comboBox_2->currentIndex() == 0 ? 4 : 5); i++)
         surfaces[i]->setVisible(false);
 
-    switch (index)
+    switch (index) // TODO MAKE ENUM, pls
     {
     case 0:
     {

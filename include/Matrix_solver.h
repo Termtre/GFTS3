@@ -32,14 +32,13 @@ public:
     virtual ~Matrix_solver();
 
     /**
-     * Getter for f
-     *
-     * @param i, j point of grid
-     * @return value of function in point ixj grid
+     * @return calculated value of max|v - f| for all i,j
      */
+    double calculate_residual() const;
 public:
     const size_t n, m;          ///< Numbers of grid splits
     Matrix v;                   ///< Container for numerical method solve
+    double precision;           ///< precision
     const Matrix f;             ///< Right part of Dirichlet problem
 };
 
