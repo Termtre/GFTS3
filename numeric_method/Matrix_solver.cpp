@@ -134,24 +134,24 @@ std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)
     return out;
 }
 
-int solve(Matrix_solver & s, const double precision, const int N_max)
+int Matrix_solver::solve( const double precision, const int N_max)
 {
     int N = 0;
     double eps;
     for(;N < N_max;++N)
     {
         eps = 0.0;
-        for(size_t i = 1; i < s.n; ++i)
-            for(size_t j = 1; j < s.m; ++j)
+        for(size_t i = 1; i < n; ++i)
+            for(size_t j = 1; j < m; ++j)
             {
-                const double v_new = s(i,j);
-                eps = std::max(eps, std::abs(v_new - s.v[i][j]));
-                s.v[i][j] = v_new;
+                const double v_new = operator()(i,j);
+                eps = std::max(eps, std::abs(v_new - v[i][j]));
+                v[i][j] = v_new;
             }
         if(eps < precision)
             break;
     }
-    s.precision = eps;
+    this->precision = eps;
     return N;
 };
 }

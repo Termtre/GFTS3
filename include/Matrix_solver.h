@@ -35,6 +35,17 @@ public:
      * @return calculated value of max|v - f| for all i,j
      */
     double calculate_residual() const;
+
+    /**
+    * calculate approcimaitons until precision or max number of iteration is reached
+    *
+    * @param precision Stop condition, difference between last and pre-last approcimaiton
+    * @param N_max Stop condition, max number of iteration
+    *
+    * @return number of iteration
+    */
+    virtual int solve(const double precision, const int N_max);
+
 public:
     const size_t n, m;          ///< Numbers of grid splits
     Matrix v;                   ///< Container for numerical method solve
@@ -43,15 +54,4 @@ public:
 };
 
 std::ostream & operator<<(std::ostream& out, const Matrix_solver& s);
-
-/**
- * calculate approcimaitons until precision or max number of iteration is reached
- *
- * @param s Method and data for calculating
- * @param precision Stop condition, difference between last and pre-last approcimaiton
- * @param N_max Stop condition, max number of iteration
- *
- * @return number of iteration
- */
-int solve(Matrix_solver & s, const double precision, const int N_max);
 }

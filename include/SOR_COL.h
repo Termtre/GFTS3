@@ -1,33 +1,35 @@
 #pragma once
+
 #include <thread>
-#include <utility>
-#include <vector>
+#include <CL/opencl.hpp>
 
 #include "MWR.h"
 
 namespace numeric_method
 {
 
-class SOR_COL : public MWR
+class SOR_COL : public numeric_method::MWR
 {
 public:
     SOR_COL(const size_t _n, const size_t _m);
     SOR_COL(const size_t _n, const size_t _m, numeric_method::test dummy);
-    virtual ~SOR_COL() override;
+    virtual ~SOR_COL() {};
+    using MWR::operator();
 
-    void run();
-    void join();
+    int solve(const double precision, const int N_max);
 private:
     struct colored_thread
     {
-        std::thread executer;
-        std::vector<std::pair<const size_t, const size_t>> board;
         double precision = 0.0;
-        void execute(Matrix_solver& MS);
-    };
-    colored_thread Towers[4];
-};
+        size_t i_start = 1, j_start = 1;
+        size_t count = 0;
+        std::thread executer;
+        bool solve_running = true;
+        bool calc_running = false;
+        Matrix_solver * memory;
+        colored_thread(Matrix_solver * _memory);
+        virtual ~colored_thread();
+     };
 
-int solve(SOR_COL & s, const double precision, const int N_max);
-
 };
+}

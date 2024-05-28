@@ -4,12 +4,16 @@
 #include <memory>
 
 #include "MWR.h"
+#include "SOR_COL.h"
 
 enum class Numerical_method
 {
     MWR_MAIN,
     MWR_TEST,
     MWR_BIGGER,
+    SOR_MAIN,
+    SOR_TEST,
+    SOR_BIGGER,
     //TODO add another method enumeration
     NONE
 };
@@ -26,7 +30,7 @@ public:
 #elif __WIN64
     Task_manager(int core = 6);
 #elif __linux__
-    Task_manager(int core = 4);
+    Task_manager(int core = 2);
 #endif
 
     /**
@@ -81,7 +85,7 @@ struct ThreadInput
 
     void operator()()
     {
-        count = numeric_method::solve(*s, Emet, Nmax);
+        count = s->solve(Emet, Nmax);
         calculated = true;
     }
 };
