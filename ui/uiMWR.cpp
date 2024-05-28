@@ -5,6 +5,8 @@
 
 void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 {
+    ui->groupBox_N2->setVisible(false);
+
     const size_t n = rows - 1;
     const size_t m = columns - 1;
 
@@ -40,12 +42,19 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
         }
         array[1] << newRow;
     }
-    printf("%f\n", sN_test->calculate_residual());
+
+    ui->edit_R0->setText(QString::number(sN_test->calculate_residual()));
+    //printf("%f\n", sN_test->calculate_residual());
 
     sN_test = manager.returnTask(count, Numerical_method::SOR_TEST);
 
-    printf("%f\n", sN_test->calculate_residual());
-    printf("%f\n", sN_test->precision);
+    ui->edit_RN->setText(QString::number(sN_test->calculate_residual()));
+    ui->edit_EpsN->setText(QString::number(sN_test->precision));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN_test))->w));
+
+    //printf("%f\n", sN_test->calculate_residual());
+    //printf("%f\n", sN_test->precision);
+
     for(size_t i = 0; i < n + 1; ++i)
     {
         QSurfaceDataRow newRow[3];
@@ -99,10 +108,17 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_MaxX->setText(QString::number(xMax));
     ui->edit_MaxY->setText(QString::number(yMax));
+
+    ui->lineEdit_12->setText("Линейная интерполяция вдоль оси x");
+
+    ui->label_8->setText("Тестовая задача должна быть решена с погрешностью не более ε = 0.5⋅10<sup>–6</sup>");
+    ui->label_11->setText("Максимальное отклонение точного и численного решений наблюдается в узле:");
 }
 
 void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 {
+    ui->groupBox_N2->setVisible(true);
+
     const size_t n = rows - 1;
     const size_t m = columns - 1;
 
@@ -144,16 +160,28 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
         }
     }
 
-    printf("%f\n", sN->calculate_residual());
-    printf("%f\n", s2N->calculate_residual());
+    ui->edit_R0->setText(QString::number(sN->calculate_residual()));
+
+
+    //printf("%f\n", sN->calculate_residual());
+    //printf("%f\n", s2N->calculate_residual());
 
     sN = manager.returnTask(count, Numerical_method::SOR_MAIN);
     s2N = manager.returnTask(count1, Numerical_method::SOR_BIGGER);
 
-    printf("%f\n", sN->calculate_residual());
-    printf("%f\n", s2N->calculate_residual());
-    printf("%f\n", sN->precision);
-    printf("%f\n", s2N->precision);
+    ui->edit_RN->setText(QString::number(sN->calculate_residual()));
+    ui->edit_EpsN->setText(QString::number(sN->precision));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN))->w));
+
+    ui->lineEdit_endNevN2->setText(QString::number(s2N->calculate_residual()));
+    ui->lineEdit_endEpsN2->setText(QString::number(s2N->precision));
+    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*s2N))->w));
+
+    //printf("%f\n", sN->calculate_residual());
+    //printf("%f\n", s2N->calculate_residual());
+    //printf("%f\n", sN->precision);
+   // printf("%f\n", s2N->precision);
+
     for(size_t i = 0; i < n + 1; ++i)
     {
         QSurfaceDataRow newRow[3];
@@ -204,9 +232,18 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
     ui->edit_epsmet->setText(QString::number(Eps, 'g', 10));
     ui->edit_Nmax->setText(QString::number(NMax));
 
-    ui->edit_N->setText(QString::number(std::max(count1,count)));
+    ui->lineEdit_epsN2->setText(QString::number(Eps, 'g', 10));
+    ui->lineEdit_maxN2->setText(QString::number(2 * NMax));
+    ui->lineEdit_endN2->setText(QString::number(count1));
+
+    ui->edit_N->setText(QString::number(count));
     ui->edit_Eps1->setText(QString::number(epsMax));
 
     ui->edit_MaxX->setText(QString::number(xMax));
     ui->edit_MaxY->setText(QString::number(yMax));
+
+    ui->lineEdit_12->setText("Линейная интерполяция вдоль оси y");
+
+    ui->label_8->setText("Основная задача должна быть решена с погрешностью не более ε = 0.5⋅10<sup>–6</sup>");
+    ui->label_11->setText("Максимальное отклонение численных решений на основной сетке и\nсетке с половинным шагом в узле:");
 }

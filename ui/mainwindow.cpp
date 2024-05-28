@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->checkBox->setChecked(true);
     ui->checkBox_2->setChecked(true);
+
+    ui->groupBox_N2->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -101,9 +103,9 @@ void MainWindow::on_start_clicked()
     }
     else
     {
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_MAIN, Eps, NMax);
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_BIGGER, 10.0 * Eps, NMax);
-        calc = new Calculator(Numerical_method::SOR_BIGGER,manager);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_MAIN, Eps, NMax);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_BIGGER, Eps, 2 * NMax);
+        calc = new Calculator(Numerical_method::MWR_BIGGER,manager);
     }
 
     // int numberOfGraphics = (ui->comboBox_2->currentIndex() == 0) ? 4 : 5;
