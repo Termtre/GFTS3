@@ -58,6 +58,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_start_clicked()
 {
+    ui->start->setEnabled(false);
+
     ui->progressBar->reset();
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum((rows - 1) * (columns - 1));
@@ -103,9 +105,9 @@ void MainWindow::on_start_clicked()
     }
     else
     {
-        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_MAIN, Eps, NMax);
-        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_BIGGER, Eps, 2 * NMax);
-        calc = new Calculator(Numerical_method::MWR_BIGGER,manager);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_MAIN, Eps, NMax);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_BIGGER, Eps, 2 * NMax);
+        calc = new Calculator(Numerical_method::SOR_BIGGER,manager);
     }
 
     // int numberOfGraphics = (ui->comboBox_2->currentIndex() == 0) ? 4 : 5;
@@ -180,6 +182,8 @@ void MainWindow::on_start_clicked()
         surfaces[i]->setVisible(false);
 
     surfaces[ui->comboBox_3->currentIndex()]->setVisible(true);
+
+    ui->start->setEnabled(true);
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)

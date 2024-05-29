@@ -39,7 +39,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     {
         for(size_t j = 1; j < m; ++j)
         {
-            v[i][j] = v[i][0]; // linear interpolation along y, can use v[0][j]!
+            v[i][j] = v[0][j]; // linear interpolation along x, can use v[0][j]!
         }
     };
 
@@ -98,7 +98,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
     for(size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
-            v[i][j] = (v[i][0] * (m + 1  - j) + v[i][m] * j) / (m + 1); // linear interpolation along x
+            v[i][j] = (v[0][j] * (n + 1  - i) + v[n][j] * i) / (n + 1); // linear interpolation along y
     };
 }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <thread>
+
+#define CL_HPP_TARGET_OPENCL_VERSION 300
 #include <CL/opencl.hpp>
 
 #include "MWR.h"
@@ -18,18 +20,30 @@ public:
 
     int solve(const double precision, const int N_max);
 private:
-    struct colored_thread
-    {
-        double precision = 0.0;
-        size_t i_start = 1, j_start = 1;
-        size_t count = 0;
-        std::thread executer;
-        bool solve_running = true;
-        bool calc_running = false;
-        Matrix_solver * memory;
-        colored_thread(Matrix_solver * _memory);
-        virtual ~colored_thread();
-     };
+    void prepare_buffers();
+    Matrix to_diagonal(const Matrix& rec);
+    Matrix to_rectangle(const Matrix& diag);
+    void initCL();
+private:
+    cl::CommandQueue queue;
+    cl::Kernel kernel;
+    cl::Buffer up_left;
+    cl::Buffer centers;
+    cl::Buffer right_down;
+    cl::Buffer fun;
+// private:
+//     struct colored_thread
+//     {
+//         double precision = 0.0;
+//         size_t i_start = 1, j_start = 1;
+//         size_t count = 0;
+//         std::thread executer;
+//         bool solve_running = true;
+//         bool calc_running = false;
+//         Matrix_solver * memory;
+//         colored_thread(Matrix_solver * _memory);
+//         virtual ~colored_thread();
+//      };
 
 };
 }

@@ -25,13 +25,7 @@ public:
     /**
      * @param core number of core in system
      */
-#ifdef __APPLE__
-    Task_manager(int core = 8);
-#elif __WIN64
-    Task_manager(int core = 6);
-#elif __linux__
     Task_manager(int core = 2);
-#endif
 
     /**
      * Method for push task in manager

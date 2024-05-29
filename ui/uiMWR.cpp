@@ -50,7 +50,7 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_RN->setText(QString::number(sN_test->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN_test->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN_test))->w));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN_test))->w));
 
     //printf("%f\n", sN_test->calculate_residual());
     //printf("%f\n", sN_test->precision);
@@ -171,11 +171,11 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_RN->setText(QString::number(sN->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN))->w));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN))->w));
 
     ui->lineEdit_endNevN2->setText(QString::number(s2N->calculate_residual()));
     ui->lineEdit_endEpsN2->setText(QString::number(s2N->precision));
-    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*s2N))->w));
+    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*s2N))->w));
 
     //printf("%f\n", sN->calculate_residual());
     //printf("%f\n", s2N->calculate_residual());

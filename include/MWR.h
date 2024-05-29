@@ -12,11 +12,13 @@ public:
 public:
     MWR(const size_t _n, const size_t _m);
     MWR(const size_t _n, const size_t _m, numeric_method::test dummy);
-    virtual double operator()(const size_t i, const size_t j) const override;
+    virtual double operator()(const size_t i, const size_t j) const  override;
     virtual ~MWR();
-private:
+
+    int solve( const double precision, const int N_max) override;
+protected:
     double w_a;                     ///< w / A, for faster calculation
-    double x_step_2, y_step_2;///< Difference scheme step
+    double x_step_2, y_step_2;      ///< Difference scheme step
     using Matrix_solver::solve;
 };
 };
