@@ -2,8 +2,8 @@
 
 #include <thread>
 
-#define CL_HPP_TARGET_OPENCL_VERSION 300
-#include <CL/opencl.hpp>
+#define CL_VERSION_1_2
+#include <CL/cl_gl.h>
 
 #include "MWR.h"
 
@@ -25,12 +25,12 @@ private:
     Matrix to_rectangle(const Matrix& diag);
     void initCL();
 private:
-    cl::CommandQueue queue;
-    cl::Kernel kernel;
-    cl::Buffer up_left;
-    cl::Buffer centers;
-    cl::Buffer right_down;
-    cl::Buffer fun;
+    cl_command_queue queue = NULL;
+    cl_kernel kernel       = NULL;
+    cl_mem up_left         = NULL;
+    cl_mem centers         = NULL;
+    cl_mem right_down      = NULL;
+    cl_mem fun             = NULL;
 // private:
 //     struct colored_thread
 //     {
