@@ -100,14 +100,14 @@ void MainWindow::on_start_clicked()
 
     if (ui->comboBox_2->currentIndex() == 0)
     {
-         manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_TEST, Eps, NMax);
-         calc = new Calculator(Numerical_method::SOR_TEST,manager);
+         manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_TEST, Eps, NMax);
+         calc = new Calculator(Numerical_method::MWR_TEST,manager);
     }
     else
     {
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_MAIN, Eps, NMax);
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_BIGGER, Eps, 2 * NMax);
-        calc = new Calculator(Numerical_method::SOR_BIGGER,manager);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_MAIN, Eps, NMax);
+        manager.createTask(rows - 1, columns - 1, Numerical_method::MWR_BIGGER, Eps, 2 * NMax);
+        calc = new Calculator(Numerical_method::MWR_BIGGER,manager);
     }
 
     // int numberOfGraphics = (ui->comboBox_2->currentIndex() == 0) ? 4 : 5;
@@ -155,7 +155,7 @@ void MainWindow::on_start_clicked()
 
  void MainWindow::on_end_clicked(const Numerical_method method)
 {
-    int numberOfGraphics = (method == Numerical_method::SOR_TEST) ? 4 : 5;
+    int numberOfGraphics = (method == Numerical_method::MWR_TEST) ? 4 : 5;
 
     std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
 
@@ -164,7 +164,7 @@ void MainWindow::on_start_clicked()
         it->reserve(rows);
     }
 
-    if (method == Numerical_method::SOR_TEST)
+    if (method == Numerical_method::MWR_TEST)
     {
         taskTest(vecArray);
     }
