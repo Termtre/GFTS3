@@ -8,7 +8,7 @@ namespace numeric_method
 class MCG : public Matrix_solver
 {
 public:
-    double K;                 // Парамерт для метода
+    double w;                 // Парамерт для метода
 public:
     MCG(const size_t _n, const size_t _m);
     MCG(const size_t _n, const size_t _m, numeric_method::test dummy);

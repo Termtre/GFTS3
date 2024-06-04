@@ -201,7 +201,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="0" column="0">
              <widget class="QTabWidget" name="tabWidget_2">
               <property name="currentIndex">
-               <number>1</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="tab_4">
                <attribute name="title">
@@ -1177,21 +1177,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <item>
           <property name="text">
            <string>Верхней релаксации ω ∈(0, 2)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Простой итерации</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Минимальных невязок</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>С чебышевским набором параметров</string>
           </property>
          </item>
          <item>

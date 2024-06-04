@@ -39,7 +39,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     {
         for(size_t j = 1; j < m; ++j)
         {
-            v[i][j] = v[i][0]; // linear interpolation along y, can use v[0][j]!
+            v[i][j] = v[0][j];//v[i][0]; // linear interpolation along y, can use v[0][j]!
         }
     };
 
@@ -68,8 +68,10 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
             for(size_t j = 1; j < _m; ++j)
             {
                 const double y = static_cast<double> (j) / _m;
-                ret[i][j] += _n * _n * (esin( (x + h) * y) + esin( (x - h) * y) - 2 * esin(x * y)); // d2/dx^2
-                ret[i][j] += _m * _m * (esin( x * (y + k)) + esin( x * (y - k)) - 2 * esin(x * y)); // d2/dy^2
+                //ret[i][j] += _n * _n * (esin( (x + h) * y) + esin( (x - h) * y) - 2 * esin(x * y)); // d2/dx^2
+                //ret[i][j] += _m * _m * (esin( x * (y + k)) + esin( x * (y - k)) - 2 * esin(x * y)); // d2/dy^2
+                ret[i][j] = esin(x * y) * pi * pi *
+                            (x * x + y * y) * (2. - 4. * sin(pi * x * y) * sin(pi * x * y) + sin(2. * pi * x * y) * sin(2. * pi * x * y));
             }
         }
         return ret;
@@ -98,7 +100,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
     for(size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
-            v[i][j] = (v[i][0] * (m + 1  - j) + v[i][m] * j) / (m + 1); // linear interpolation along x
+            v[i][j] = v[0][j];//(v[i][0] * (m + 1  - j) + v[i][m] * j) / (m + 1); // linear interpolation along x
     };
 }
 
@@ -137,9 +139,10 @@ std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)
 int solve(Matrix_solver & s, const double precision, const int N_max)
 {
     int N = 0;
-    double eps;
+    double eps = 0.;
     for(;N < N_max;++N)
     {
+        std::cout << "s: " << N << " eps: " << eps << std::endl;
         eps = 0.0;
         for(size_t i = 1; i < s.n; ++i)
             for(size_t j = 1; j < s.m; ++j)
