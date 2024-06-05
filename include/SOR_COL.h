@@ -39,25 +39,25 @@ private:
     cl_mem right_down      = NULL;
     cl_mem fun             = NULL;
 private:
-    struct colored_thread
-    {
-        double precision = 0.0;
-        size_t start = 0;
-        size_t end = 0;
-        std::thread executer;
-        bool solve_running = true;
-        bool calc_running = false;
-        double w;
-        double w_a;
-        double x_step_2;
-        double y_step_2;
-        std::vector<double> * up_left;
-        std::vector<double> * centers;
-        std::vector<double> * right_down;
-        std::vector<double> * fun;
-        colored_thread(const MWR& data);
-        virtual ~colored_thread() {};
-     };
+    // struct colored_thread
+    // {
+    //     double precision = 0.0;
+    //     size_t start = 0;
+    //     size_t end = 0;
+    //     std::thread executer;
+    //     bool solve_running = true;
+    //     bool calc_running = false;
+    //     double w;
+    //     double w_a;
+    //     double x_step_2;
+    //     double y_step_2;
+    //     std::vector<double> * up_left;
+    //     std::vector<double> * centers;
+    //     std::vector<double> * right_down;
+    //     std::vector<double> * fun;
+    //     colored_thread(const MWR& data);
+    //     virtual ~colored_thread() {};
+    //  };
 
 };
 }

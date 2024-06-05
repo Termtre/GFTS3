@@ -17,7 +17,7 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     double xMax = 0., yMax = 0.;
     double x, y;
 
-    std::unique_ptr<numeric_method::Matrix_solver> sN_test = std::make_unique<numeric_method::MWR>(n,m,numeric_method::test{});
+    std::unique_ptr<numeric_method::Matrix_solver> sN_test = std::make_unique<numeric_method::SOR_COL>(n,m,numeric_method::test{});
 
     const double stepX = (bX - aX) / static_cast<double>(n);
     const double stepY = (bY - aY) / static_cast<double>(m);
@@ -45,11 +45,11 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_R0->setText(QString::number(sN_test->calculate_residual()));
 
-    sN_test = manager.returnTask(count, Numerical_method::MWR_TEST);
+    sN_test = manager.returnTask(count, Numerical_method::SOR_TEST);
 
     ui->edit_RN->setText(QString::number(sN_test->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN_test->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN_test))->w));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN_test))->w));
     for(size_t i = 0; i < n + 1; ++i)
     {
         QSurfaceDataRow newRow[3];
@@ -124,8 +124,8 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
     double xMax = 0., yMax = 0.;
     double x, y;
 
-    std::unique_ptr<numeric_method::Matrix_solver> sN = std::make_unique<numeric_method::MWR>(n,m);
-    std::unique_ptr<numeric_method::Matrix_solver> s2N = std::make_unique<numeric_method::MWR>(2 * n,2 * m);
+    std::unique_ptr<numeric_method::Matrix_solver> sN = std::make_unique<numeric_method::SOR_COL>(n,m);
+    std::unique_ptr<numeric_method::Matrix_solver> s2N = std::make_unique<numeric_method::SOR_COL>(2 * n,2 * m);
     const double stepX = (bX - aX) / static_cast<double>(n);
     const double stepY = (bY - aY) / static_cast<double>(m);
 
@@ -157,16 +157,16 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_R0->setText(QString::number(sN->calculate_residual()));
 
-    sN = manager.returnTask(count, Numerical_method::MWR_MAIN);
-    s2N = manager.returnTask(count1, Numerical_method::MWR_BIGGER);
+    sN = manager.returnTask(count, Numerical_method::SOR_MAIN);
+    s2N = manager.returnTask(count1, Numerical_method::SOR_BIGGER);
 
     ui->edit_RN->setText(QString::number(sN->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN))->w));
+    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN))->w));
 
     ui->lineEdit_endNevN2->setText(QString::number(s2N->calculate_residual()));
     ui->lineEdit_endEpsN2->setText(QString::number(s2N->precision));
-    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*s2N))->w));
+    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*s2N))->w));
 
     for(size_t i = 0; i < n + 1; ++i)
     {

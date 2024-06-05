@@ -104,29 +104,32 @@ void SOR_COL::initCL()
 SOR_COL::SOR_COL(const size_t _n, const size_t _m)
 :numeric_method::MWR(_n,_m)
 {
-    initCL();
+    //initCL();
 };
 
 SOR_COL::SOR_COL(const size_t _n, const size_t _m, numeric_method::test dummy)
 :numeric_method::MWR(_n,_m,dummy)
 {
-    initCL();
+    //initCL();
 };
 
 SOR_COL::~SOR_COL()
 {
-    clReleaseMemObject(up_left);
-    clReleaseMemObject(centers);
-    clReleaseMemObject(right_down);
-    clReleaseMemObject(fun);
-
-    clReleaseKernel(kernel);
-
-    clReleaseProgram(program);
-
-    clReleaseCommandQueue(queue);
-
-    clReleaseContext(context);
+    // clReleaseMemObject(control);
+    // clReleaseMemObject(epsilon);
+    // clReleaseMemObject(up_left);
+    // clReleaseMemObject(centers);
+    // clReleaseMemObject(right_down);
+    // clReleaseMemObject(fun);
+    //
+    // clReleaseKernel(kernel);
+    // clReleaseKernel(diff_kernel);
+    //
+    // clReleaseProgram(program);
+    //
+    // clReleaseCommandQueue(queue);
+    //
+    // clReleaseContext(context);
 };
 Matrix SOR_COL::to_diagonal(const Matrix& rec)
 {
@@ -150,54 +153,56 @@ Matrix SOR_COL::to_rectangle(const Matrix& diag)
     return rec;
 };
 
-SOR_COL::colored_thread::colored_thread(const MWR& data)
-:
-w(data.w),
-w_a(data.w_a),
-x_step_2(data.x_step_2),
-y_step_2(data.y_step_2)
-{
-    executer = std::thread([&]()
-    {
-         while(solve_running)
-            {
-            if(calc_running == false)
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            else
-            {
-                for(int idx = start; idx < end; ++idx)
-                {
-                    const double v_old = (*centers)[idx];
-                    (*centers)[idx] = (1.0 - w) * (*centers)[idx] + w_a *
-                    (
-                    (*fun)[idx] +
-                    x_step_2 * ((*up_left)[idx] + (*right_down)[idx]) +
-                    y_step_2 * ((*up_left)[idx - 1] + (*right_down)[idx + 1])
-                    );
-                    precision = std::max(precision, std::abs(v_old - (*centers)[idx]));
-                }
-                calc_running = false;
-            }
-            }
-        }
-    );
-};
+// SOR_COL::colored_thread::colored_thread(const MWR& data)
+// :
+// w(data.w),
+// w_a(data.w_a),
+// x_step_2(data.x_step_2),
+// y_step_2(data.y_step_2)
+// {
+//     executer = std::thread([&]()
+//     {
+//          while(solve_running)
+//             {
+//             if(calc_running == false)
+//                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//             else
+//             {
+//                 for(int idx = start; idx < end; ++idx)
+//                 {
+//                     const double v_old = (*centers)[idx];
+//                     (*centers)[idx] = (1.0 - w) * (*centers)[idx] + w_a *
+//                     (
+//                     (*fun)[idx] +
+//                     x_step_2 * ((*up_left)[idx] + (*right_down)[idx]) +
+//                     y_step_2 * ((*up_left)[idx - 1] + (*right_down)[idx + 1])
+//                     );
+//                     precision = std::max(precision, std::abs(v_old - (*centers)[idx]));
+//                 }
+//                 calc_running = false;
+//             }
+//             }
+//         }
+//     );
+// };
 
 int SOR_COL::solve(const double prec, const int N_max)
 {
     if (n < 2 || m < 2)
         return 0;
     int N = 0;
-    Matrix v_diag = to_diagonal(v);
-    Matrix f_diag = to_diagonal(f);
-//    colored_thread s(*this);
+    const int diagonal_num = n + m - 1;
+    //Matrix v_diag = to_diagonal(v);
+    //const Matrix f_diag = to_diagonal(f);
 //    const size_t preferred_multiple = 8;
-//    int ret = 0;
-    // cl_event writeBuf;
-    // cl_event doKernel;
-    // cl_event readBuf;
-    // cl_event epsKernel;
-    // cl_ulong time_start, time_end;
+
+
+//    int ret = 0;              //for error code
+//    cl_event writeBuf;        //for profiling info
+//    cl_event doKernel;
+//    cl_event readBuf;
+//    cl_event epsKernel;
+//    cl_ulong time_start, time_end;
 //    double w_time = 0.0;
 //    double k_time = 0.0;
 //    double r_time = 0.0;
@@ -205,51 +210,27 @@ int SOR_COL::solve(const double prec, const int N_max)
 
     for(; N < N_max; ++N)
     {
-        //ret = clEnqueueWriteBuffer(queue, centers,    CL_FALSE, 0, sizeof(double) * 2, v_diag[1].data(),     0, NULL, NULL);
-        //ret = clEnqueueWriteBuffer(queue, right_down, CL_FALSE, 0, sizeof(double) * 3, v_diag[2].data(), 0, NULL, NULL);
-        //s.precision = 0.0;
-//        const Matrix v_cont = v_diag;
         double eps = 0.0;
-        for(int i = 2; i < v_diag.size() - 2; ++i)
+        for(int idx = 1; idx < diagonal_num - 1; ++idx)
         {
-            // ret = clEnqueueCopyBuffer(   queue, centers   , up_left, 0, 0, sizeof(double) *  (1 + diagonal - globalOffset), 0, NULL, NULL );
-            // ret = clFinish(queue);
-            //
-            // ret = clEnqueueCopyBuffer(   queue, right_down, centers, 0, 0, sizeof(double) * (1 + diagonal - globalOffset), 0, NULL, NULL);
-            // ret = clFinish(queue);
-
-
-
-            const size_t diagonal = std::min(i, static_cast<int>(n)) + 1;
-
-
-        //     const size_t global_work_group = ((diagonal - 1) / preferred_multiple + 1) * preferred_multiple;
-            const size_t globalOffset = std::max(0, i - static_cast<int>(m));
-
-            // s.up_left = &v_diag[i - 1];
-            // s.centers = &v_diag[i];
-            // s.right_down = &v_diag[i + 1];
-            // s.fun = &f_diag[i];
-            //
-            // s.start = globalOffset + 1;
-            // s.end = diagonal / 2;
-            //
-            // s.calc_running = true;
-
-            for(int idx = globalOffset; idx < diagonal - 2; ++idx)
+            const size_t j0 = std::min(idx, static_cast<int>(n) - 1);
+            const size_t i0 = std::max(1, idx - static_cast<int>(m) + 2);
+            const size_t diagonal_elem = j0 - i0 + 1;
+            #pragma omp parallel for reduction(max:eps)
+            for(size_t d = 0; d < diagonal_elem; ++d)
             {
-                const double v_old = v_diag[i][idx];
-                    v_diag[i][idx] = (1.0 - w) * v_diag[i][idx] + w_a *
+                const size_t i = i0 + d, j = j0 - d;
+                const double v_old = v[i][j];
+                    v[i][j] = (1.0 - w) * v[i][j] + w_a *
                     (
-                    f_diag[i][idx] +
-                    x_step_2 * (v_diag[i-1][idx] + v_diag[i + 1][idx]) +
-                    y_step_2 * (v_diag[i - 1][idx - 1] + v_diag[i + 1][idx + 1])
+                    f[i][j] +
+                    x_step_2 * (v[i - 1][j] + v[i + 1][j]) +
+                    y_step_2 * (v[i][j - 1] + v[i][j + 1])
                     );
-                    eps = std::max(eps, std::abs(v_old - v_diag[i][idx]));
+                    const double eps_point = std::abs(v_old - v[i][j]);
+                    if(eps_point > eps)
+                        eps = eps_point;
             }
-
-            // while(s.calc_running)
-            //     std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         //
         //     ret = clEnqueueWriteBuffer(queue, up_left,    CL_FALSE, 0, sizeof(double) * (diagonal - globalOffset), v_diag[i - 1].data() + globalOffset, 0, NULL, NULL);
@@ -334,7 +315,7 @@ int SOR_COL::solve(const double prec, const int N_max)
     // std::ofstream out("perfomance_test.txt", std::ios::app );
     // out << n << "x" << m << " w = " << w_time << " k = " << k_time << " e = "<< e_time << " r =" << r_time << std::endl;
     // out.close();
-    v = to_rectangle(v_diag);
+    //v = to_rectangle(v_diag);
 
     return N;
 };

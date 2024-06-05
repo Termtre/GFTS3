@@ -8,7 +8,7 @@ namespace numeric_method
 class MWR : public Matrix_solver
 {
 public:
-    double w;                 ///< Relaxation parameter
+    const double w;                 ///< Relaxation parameter
 public:
     MWR(const size_t _n, const size_t _m);
     MWR(const size_t _n, const size_t _m, numeric_method::test dummy);
@@ -18,7 +18,7 @@ public:
     int solve( const double precision, const int N_max) override;
 protected:
     double w_a;                     ///< w / A, for faster calculation
-    double x_step_2, y_step_2;      ///< Difference scheme step
+    const double x_step_2, y_step_2;      ///< Difference scheme step
     using Matrix_solver::solve;
 };
 };
