@@ -1,8 +1,7 @@
 #include "mainwindow.h"
-#include <utility>
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-//#include <QFuture>
+#include <QFuture>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,6 +62,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_start_clicked()
 {
+    ui->start->setEnabled(false);
+
     ui->progressBar->reset();
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum((rows - 1) * (columns - 1));
@@ -156,6 +157,8 @@ void MainWindow::on_start_clicked()
         surfaces[i]->setVisible(false);
 
     surfaces[ui->comboBox_3->currentIndex()]->setVisible(true);
+
+    ui->start->setEnabled(true);
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)

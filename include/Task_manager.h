@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "MWR.h"
+#include "SOR_COL.h"
 #include "MCG.h"
 
 enum class Numerical_method
@@ -12,6 +13,11 @@ enum class Numerical_method
     MWR_MAIN,
     MWR_TEST,
     MWR_BIGGER,
+
+    SOR_MAIN,
+    SOR_TEST,
+    SOR_BIGGER,
+
     // simple iter
     MSI_MAIN,
     MSI_TEST,
@@ -39,13 +45,7 @@ public:
     /**
      * @param core number of core in system
      */
-#ifdef __APPLE__
-    Task_manager(int core = 8);
-#elif __WIN64
-    Task_manager(int core = 6);
-#elif __linux__
-    Task_manager(int core = 4);
-#endif
+    Task_manager(int core = 2);
 
     /**
      * Method for push task in manager
@@ -99,7 +99,7 @@ struct ThreadInput
 
     void operator()()
     {
-        count = numeric_method::solve(*s, Emet, Nmax);
+        count = s->solve(Emet, Nmax);
         calculated = true;
     }
 };

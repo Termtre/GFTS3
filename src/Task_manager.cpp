@@ -42,6 +42,15 @@ void Task_manager::createTask(const size_t n, const size_t m, const Numerical_me
         case Numerical_method::MWR_TEST:
             task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MWR>(n, m, numeric_method::test{}));
             break;
+        case Numerical_method::SOR_MAIN:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::SOR_COL>(n, m));
+            break;
+        case Numerical_method::SOR_BIGGER:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::SOR_COL>(2 * n, 2 * m));
+            break;
+        case Numerical_method::SOR_TEST:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::SOR_COL>(n, m, numeric_method::test{}));
+            break;
         case Numerical_method::MCG_MAIN:
             task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MCG>(n, m));
             break;
@@ -63,7 +72,7 @@ void Task_manager::wait_solution(const Numerical_method method) const
 {
     size_t i = static_cast<size_t>(method);
     while(! (task[i]->calculated))
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 };
 
 std::unique_ptr<numeric_method::Matrix_solver> Task_manager::returnTask(size_t& count, const Numerical_method method)

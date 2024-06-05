@@ -39,7 +39,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m)
     {
         for(size_t j = 1; j < m; ++j)
         {
-            v[i][j] = v[0][j];//v[i][0]; // linear interpolation along y, can use v[0][j]!
+            v[i][j] = v[0][j]; // linear interpolation along y, can use v[0][j]!
         }
     };
 
@@ -100,7 +100,9 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
     for(size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
-            v[i][j] = v[0][j];//(v[i][0] * (m + 1  - j) + v[i][m] * j) / (m + 1); // linear interpolation along x
+
+            v[i][j] = (v[0][j] * (n + 1  - i) + v[n][j] * i) / (n + 1); // linear interpolation along y
+
     };
 }
 
@@ -117,7 +119,7 @@ double Matrix_solver::calculate_residual() const
         for(size_t j = 1; j < m; ++j)
             eps = std::max(eps,std::abs(
                 (v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * n * n +
-                (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m +
+                (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m -
                 f[i][j]
             ));
     }
@@ -136,7 +138,7 @@ std::ostream& operator<<(std::ostream& out, const Matrix_solver& s)
     return out;
 }
 
-int solve(Matrix_solver & s, const double precision, const int N_max)
+int Matrix_solver::solve( const double precision, const int N_max)
 {
     int N = 0;
     double eps = 0.;
@@ -144,17 +146,17 @@ int solve(Matrix_solver & s, const double precision, const int N_max)
     {
         std::cout << "s: " << N << " eps: " << eps << std::endl;
         eps = 0.0;
-        for(size_t i = 1; i < s.n; ++i)
-            for(size_t j = 1; j < s.m; ++j)
+        for(size_t i = 1; i < n; ++i)
+            for(size_t j = 1; j < m; ++j)
             {
-                const double v_new = s(i,j);
-                eps = std::max(eps, std::abs(v_new - s.v[i][j]));
-                s.v[i][j] = v_new;
+                const double v_new = operator()(i,j);
+                eps = std::max(eps, std::abs(v_new - v[i][j]));
+                v[i][j] = v_new;
             }
         if(eps < precision)
             break;
     }
-    s.precision = eps;
+    this->precision = eps;
     return N;
 };
 }
