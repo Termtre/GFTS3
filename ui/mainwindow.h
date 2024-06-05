@@ -64,6 +64,9 @@ private:
     Q3DSurface* surfaceGraph = nullptr;
     QSurface3DSeries* surfaces[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
+    Numerical_method curTest; // текущий метод для тестовой
+    Numerical_method curMain; // текущий метод для основной
+    Numerical_method curMain2;// текущий метод для большей размерности
 
 private:
     void taskTest(std::vector<QSurfaceDataArray>&);

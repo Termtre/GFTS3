@@ -49,6 +49,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->checkBox_2->setChecked(true);
 
     ui->groupBox_N2->setVisible(false);
+
+    curTest = Numerical_method::MWR_TEST;
+    curMain = Numerical_method::MWR_MAIN;
+    curMain2 = Numerical_method::MWR_BIGGER;
 }
 
 MainWindow::~MainWindow()
@@ -100,44 +104,19 @@ void MainWindow::on_start_clicked()
 
     if (ui->comboBox_2->currentIndex() == 0)
     {
-         manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_TEST, Eps, NMax);
-         calc = new Calculator(Numerical_method::SOR_TEST,manager);
+<<<<<<< HEAD
+
+=======
+         manager.createTask(rows - 1, columns - 1, curTest, Eps, NMax);
+         calc = new Calculator(curTest, manager);
     }
     else
     {
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_MAIN, Eps, NMax);
-        manager.createTask(rows - 1, columns - 1, Numerical_method::SOR_BIGGER, Eps, 2 * NMax);
-        calc = new Calculator(Numerical_method::SOR_BIGGER,manager);
+        manager.createTask(rows - 1, columns - 1, curMain, Eps, NMax);
+        manager.createTask(rows - 1, columns - 1, curMain2, Eps, 2 * NMax);
+        calc = new Calculator(curMain2, manager);
+>>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
     }
-
-    // int numberOfGraphics = (ui->comboBox_2->currentIndex() == 0) ? 4 : 5;
-    //
-    // std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
-    //
-    // for (auto it = vecArray.begin(); it != vecArray.end(); ++it)
-    // {
-    //     it->reserve(rows);
-    // }
-    //
-    // if (ui->comboBox_2->currentIndex() == 0)
-    // {
-    //     taskTest(vecArray);
-    // }
-    // else
-    // {
-    //     taskMain(vecArray);
-    // }
-    //
-    // for (int i = 0; i < numberOfGraphics; i++)
-    // {
-    //     surfaces[i]->dataProxy()->resetArray(vecArray[i]);
-    // }
-    //
-    // for (int i = 0; i < numberOfGraphics; i++)
-    //     surfaces[i]->setVisible(false);
-    //
-    // surfaces[ui->comboBox_3->currentIndex()]->setVisible(true);
-    //
 
     calc->moveToThread(future);
 
@@ -155,7 +134,11 @@ void MainWindow::on_start_clicked()
 
  void MainWindow::on_end_clicked(const Numerical_method method)
 {
+<<<<<<< HEAD
     int numberOfGraphics = (method == Numerical_method::SOR_TEST) ? 4 : 5;
+=======
+    int numberOfGraphics = (method == curTest) ? 4 : 5;
+>>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
 
     std::vector<QSurfaceDataArray> vecArray(numberOfGraphics);
 
@@ -164,7 +147,11 @@ void MainWindow::on_start_clicked()
         it->reserve(rows);
     }
 
+<<<<<<< HEAD
     if (method == Numerical_method::SOR_TEST)
+=======
+    if (method == curTest)
+>>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
     {
         taskTest(vecArray);
     }
@@ -312,22 +299,16 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     case 0:
         ui->labelMethod->setText("Метод верхней релаксации");
         ui->labelMethodParametr->setText("С параметром ω = ");
+        curTest = Numerical_method::MWR_TEST;
+        curMain = Numerical_method::MWR_MAIN;
+        curMain2 = Numerical_method::MWR_BIGGER;
         break;
     case 1:
-        ui->labelMethod->setText("Метод простой итерации");
-        ui->labelMethodParametr->setText("С параметром τ = ");
-        break;
-    case 2:
-        ui->labelMethod->setText("Метод минимальных невязок");
-        ui->labelMethodParametr->setText("С числом K = ");
-        break;
-    case 3:
-        ui->labelMethod->setText("Метод с чебышевским набором параметров");
-        ui->labelMethodParametr->setText("С числом K = ");
-        break;
-    case 4:
         ui->labelMethod->setText("Метод сопряженных градиентов");
-        ui->labelMethodParametr->setText("С параметром ω = ");
+        //ui->labelMethodParametr->setText("С параметром ω = ");
+        curTest = Numerical_method::MCG_TEST;
+        curMain = Numerical_method::MCG_MAIN;
+        curMain2 = Numerical_method::MCG_BIGGER;
         break;
     default:
         break;

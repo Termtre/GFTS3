@@ -5,15 +5,37 @@
 
 #include "MWR.h"
 #include "SOR_COL.h"
+#include "MCG.h"
+>>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
 
 enum class Numerical_method
 {
+    // relaxation
     MWR_MAIN,
     MWR_TEST,
     MWR_BIGGER,
+
     SOR_MAIN,
     SOR_TEST,
     SOR_BIGGER,
+
+    // simple iter
+    MSI_MAIN,
+    MSI_TEST,
+    MSI_BIGGER,
+    // minimum resud
+    MMR_MAIN,
+    MMR_TEST,
+    MMR_BIGGER,
+    // chebishev
+    MCP_MAIN,
+    MCP_TEST,
+    MCP_BIGGER,
+    // gradient
+    MCG_MAIN,
+    MCG_TEST,
+    MCG_BIGGER,
+>>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
     //TODO add another method enumeration
     NONE
 };

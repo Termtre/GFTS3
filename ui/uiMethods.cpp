@@ -45,11 +45,24 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_R0->setText(QString::number(sN_test->calculate_residual()));
 
-    sN_test = manager.returnTask(count, Numerical_method::SOR_TEST);
+
+    sN_test = manager.returnTask(count, curTest);
 
     ui->edit_RN->setText(QString::number(sN_test->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN_test->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN_test))->w));
+
+    if(ui->comboBox->currentIndex() == 0)
+    {
+        ui->labelMethodParametr->show();
+        ui->edit_parametr->show();
+        ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN_test))->w));
+    }
+    else
+    {
+        ui->labelMethodParametr->hide();
+        ui->edit_parametr->hide();
+    }
+
     for(size_t i = 0; i < n + 1; ++i)
     {
         QSurfaceDataRow newRow[3];
@@ -104,7 +117,7 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     ui->edit_MaxX->setText(QString::number(xMax));
     ui->edit_MaxY->setText(QString::number(yMax));
 
-    ui->lineEdit_12->setText("Линейная интерполяция вдоль оси x");
+    ui->lineEdit_12->setText("Линейная интерполяция вдоль оси y");
 
     ui->label_8->setText("Тестовая задача должна быть решена с погрешностью не более ε = 0.5⋅10<sup>–6</sup>");
     ui->label_11->setText("Максимальное отклонение точного и численного решений наблюдается в узле:");
@@ -157,16 +170,38 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 
     ui->edit_R0->setText(QString::number(sN->calculate_residual()));
 
-    sN = manager.returnTask(count, Numerical_method::SOR_MAIN);
-    s2N = manager.returnTask(count1, Numerical_method::SOR_BIGGER);
+    sN = manager.returnTask(count, curMain);
+    s2N = manager.returnTask(count1, curMain2);
 
     ui->edit_RN->setText(QString::number(sN->calculate_residual()));
     ui->edit_EpsN->setText(QString::number(sN->precision));
-    ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*sN))->w));
+
+    if (ui->comboBox->currentIndex() == 0)
+    {
+        ui->labelMethodParametr->show();
+        ui->edit_parametr->show();
+        ui->edit_parametr->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*sN))->w));
+    }
+    else
+    {
+        ui->labelMethodParametr->hide();
+        ui->edit_parametr->hide();
+    }
 
     ui->lineEdit_endNevN2->setText(QString::number(s2N->calculate_residual()));
     ui->lineEdit_endEpsN2->setText(QString::number(s2N->precision));
-    ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::SOR_COL *>(&(*s2N))->w));
+
+    if (ui->comboBox->currentIndex() == 0)
+    {
+        ui->label_23->show();
+        ui->lineEdit_parametrN2->show();
+        ui->lineEdit_parametrN2->setText(QString::number(dynamic_cast<numeric_method::MWR *>(&(*s2N))->w));
+    }
+    else
+    {
+        ui->label_23->hide();
+        ui->lineEdit_parametrN2->hide();
+    }
 
     for(size_t i = 0; i < n + 1; ++i)
     {
