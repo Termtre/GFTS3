@@ -119,7 +119,7 @@ double Matrix_solver::calculate_residual() const
         for(size_t j = 1; j < m; ++j)
             eps = std::max(eps,std::abs(
                 (v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * n * n +
-                (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m -
+                (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m +
                 f[i][j]
             ));
     }
