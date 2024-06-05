@@ -6,7 +6,6 @@
 #include "MWR.h"
 #include "SOR_COL.h"
 #include "MCG.h"
->>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
 
 enum class Numerical_method
 {
@@ -35,7 +34,6 @@ enum class Numerical_method
     MCG_MAIN,
     MCG_TEST,
     MCG_BIGGER,
->>>>>>> fc2c9d1d2a0ea1d6b12180f9d3114452b258a67a
     //TODO add another method enumeration
     NONE
 };
