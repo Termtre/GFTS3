@@ -1,7 +1,8 @@
 #include "../include/MCG.h"
-
+#include <iostream>
 #include <numeric>
 #include <omp.h>
+
 
 namespace numeric_method
 {
@@ -71,6 +72,7 @@ int MCG::solve( const double precision, const int N_max)
 
     for(;N < N_max;++N)
     {
+        std::cout << "s: " << N << " eps: " << eps << std::endl;
         eps = 0.0;
         // if(N%20 == 19)
         // {

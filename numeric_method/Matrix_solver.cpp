@@ -144,7 +144,8 @@ int Matrix_solver::solve( const double precision, const int N_max)
     double eps = 0.;
     for(;N < N_max;++N)
     {
-        std::cout << "s: " << N << " eps: " << eps << std::endl;
+        //std::cout << "s: " << N << " eps: " << eps << std::endl;
+        printf("s: %lf eps: %lf\n", N, eps);
         eps = 0.0;
         for(size_t i = 1; i < n; ++i)
             for(size_t j = 1; j < m; ++j)

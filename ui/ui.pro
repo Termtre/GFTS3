@@ -16,7 +16,6 @@ SOURCES += \
     ../src/instruction.cpp \
     main.cpp \
     mainwindow.cpp \
-    taskChoice.cpp \
     uiMethods.cpp
 
 HEADERS += \

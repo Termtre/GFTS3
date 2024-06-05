@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "MWR.h"
-#include "SOR_COL.h"
 #include "MCG.h"
 
 enum class Numerical_method
