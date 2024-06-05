@@ -273,6 +273,7 @@ public:
         tableWidget->setObjectName("tableWidget");
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableWidget->horizontalHeader()->setVisible(true);
+        tableWidget->horizontalHeader()->setDefaultSectionSize(200);
 
         gridLayout_10->addWidget(tableWidget, 0, 0, 1, 1);
 
@@ -284,6 +285,7 @@ public:
         tableWidget_2 = new QTableWidget(tab_5);
         tableWidget_2->setObjectName("tableWidget_2");
         tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        tableWidget_2->horizontalHeader()->setDefaultSectionSize(200);
 
         gridLayout_11->addWidget(tableWidget_2, 0, 0, 1, 1);
 
@@ -295,6 +297,7 @@ public:
         tableWidget_3 = new QTableWidget(tab_6);
         tableWidget_3->setObjectName("tableWidget_3");
         tableWidget_3->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        tableWidget_3->horizontalHeader()->setDefaultSectionSize(200);
 
         gridLayout_12->addWidget(tableWidget_3, 0, 0, 1, 1);
 
@@ -934,7 +937,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
         tabWidget_2->setCurrentIndex(2);
 
 

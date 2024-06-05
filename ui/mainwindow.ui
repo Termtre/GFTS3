@@ -152,7 +152,7 @@
            <enum>QTabWidget::North</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -201,7 +201,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="0" column="0">
              <widget class="QTabWidget" name="tabWidget_2">
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab_4">
                <attribute name="title">
@@ -215,6 +215,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <attribute name="horizontalHeaderVisible">
                    <bool>true</bool>
+                  </attribute>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>150</number>
                   </attribute>
                  </widget>
                 </item>
@@ -230,6 +233,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="editTriggers">
                    <set>QAbstractItemView::NoEditTriggers</set>
                   </property>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>150</number>
+                  </attribute>
                  </widget>
                 </item>
                </layout>
@@ -244,6 +250,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="editTriggers">
                    <set>QAbstractItemView::NoEditTriggers</set>
                   </property>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>150</number>
+                  </attribute>
                  </widget>
                 </item>
                </layout>

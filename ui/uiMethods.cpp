@@ -92,9 +92,9 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
             tmp = std::exp(tmp * tmp);
 
             err = sN_test->v[i][j] - tmp;
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(tmp)));
-            ui->tableWidget_2->setItem(i, j, new QTableWidgetItem(QString::number(sN_test->v[i][j])));
-            ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err)));
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(tmp, 'g', 16)));
+            ui->tableWidget_2->setItem(i, j, new QTableWidgetItem(QString::number(sN_test->v[i][j], 'g', 16)));
+            ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err, 'g', 16)));
 
             newRow[0].append(QSurfaceDataItem(y, tmp, x));
             newRow[1].append(QSurfaceDataItem(y, sN_test->v[i][j], x));
@@ -243,11 +243,11 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
 
             err = sN->v[i][j] - s2N->v[i * 2][j * 2];
 
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(sN->v[i][j])));
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(sN->v[i][j], 'g', 16)));
 
-            ui->tableWidget_2->setItem(i, j, new QTableWidgetItem(QString::number(s2N->v[2 * i][2 * j])));
+            ui->tableWidget_2->setItem(i, j, new QTableWidgetItem(QString::number(s2N->v[2 * i][2 * j], 'g', 16)));
 
-            ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err)));
+            ui->tableWidget_3->setItem(i, j, new QTableWidgetItem(QString::number(err, 'g', 16)));
 
             newRow[0].append(QSurfaceDataItem(y, sN->v[i][j], x));
             newRow[1].append(QSurfaceDataItem(y, s2N->v[i * 2][j * 2], x));
