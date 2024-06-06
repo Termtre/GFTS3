@@ -39,21 +39,9 @@ void MCG::comp_grad()
     for (size_t i = 1; i < n; ++i)
         for(size_t j = 1; j < n; ++j)
             grad[i][j] = -f[i][j] -  (
-                         (v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * x_step_2 +
-                         (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * y_step_2
+                         (v[i + 1][j] - 2. * v[i][j] + v[i - 1][j]) * x_step_2 +
+                         (v[i][j + 1] - 2. * v[i][j] + v[i][j - 1]) * y_step_2
                          );
-
-    // for (size_t i = 1; i < n; ++i)
-    // {
-    //     grad[i][    1] += v[i][0] * y_step_2;
-    //     grad[i][m - 1] += v[i][m] * y_step_2;
-    // }
-
-    // for (size_t j = 1; j < m; ++j)
-    // {
-    //     grad[    1][j] += v[0][j] * x_step_2;
-    //     grad[n - 1][j] += v[n][j] * x_step_2;
-    // }
 };
 
 int MCG::solve( const double precision, const int N_max)
@@ -70,23 +58,52 @@ int MCG::solve( const double precision, const int N_max)
     double eps = 0.0;
     double gradSquare = inner_prod(grad,grad);
 
+    for(size_t i = 1; i < n; ++i)
+        for(size_t j = 1; j < m; ++j)
+            Adir[i][j] = (dir[i + 1][j] - 2 * dir[i][j] + dir[i - 1][j]) * x_step_2 + (dir[i][j + 1] - 2 * dir[i][j] + dir[i][j - 1]) * y_step_2;
+
+    double alpha = gradSquare / inner_prod(Adir, dir);
+
+    for (size_t i = 1; i < n; ++i)
+    {
+        for(size_t j = 1; j < m; ++j)
+        {
+            const double incr = alpha * dir[i][j];
+            v[i][j] += incr;
+            grad[i][j] -= alpha * Adir[i][j];
+            if(incr > eps)
+                eps = incr;
+        }
+    }
+
+    //std::cout << "(h0, h0) " << gradSquare << std::endl;
+    //std::cout << "alpha" << 0 << " " <<  alpha << std::endl;
+
+    if (eps < precision) return 0;
+
     for(;N < N_max;++N)
     {
-        std::cout << "s: " << N << " eps: " << eps << std::endl;
+        printf("s: %d eps: %.12lf\n", N, eps);
+        //std::cout << "s: " << N << " eps: " << eps << std::endl;
         eps = 0.0;
-        // if(N%20 == 19)
-        // {
-        //     comp_grad();
-        //     dir = grad;
-        // }
-        //#pragma omp parallel
+
+        const double newGradSquare = inner_prod(grad,grad);
+        const double beta = newGradSquare / gradSquare;
+        //std::cout << "beta" << N << " " <<  beta << std::endl;
+
+        gradSquare = newGradSquare;
+
+        for (size_t i = 1; i < n; ++i)
+            for(size_t j = 1; j < m; ++j)
+                dir[i][j] = grad[i][j] + beta * dir[i][j];
+
         for(size_t i = 1; i < n; ++i)
             for(size_t j = 1; j < m; ++j)
                 Adir[i][j] = (dir[i + 1][j] - 2 * dir[i][j] + dir[i - 1][j]) * x_step_2 + (dir[i][j + 1] - 2 * dir[i][j] + dir[i][j - 1]) * y_step_2;
 
-        const double alpha = gradSquare / inner_prod(Adir, dir);
+        alpha = gradSquare / inner_prod(Adir, dir);
+        //std::cout << "alpha" << N << " " <<  alpha << std::endl;
 
-        //#pragma omp parallel for reduction(max:eps)
         for (size_t i = 1; i < n; ++i)
         {
             for(size_t j = 1; j < m; ++j)
@@ -98,16 +115,6 @@ int MCG::solve( const double precision, const int N_max)
                     eps = incr;
             }
         }
-
-        const double newGradSquare = inner_prod(grad,grad);
-        const double beta = newGradSquare / gradSquare;
-
-        gradSquare = newGradSquare;
-
-        //#pragma omp parallel
-        for (size_t i = 1; i < n; ++i)
-            for(size_t j = 1; j < m; ++j)
-                dir[i][j] = grad[i][j] + beta * dir[i][j];
 
         if(eps < precision)
             break;

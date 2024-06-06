@@ -10,6 +10,7 @@ CONFIG += c++20
 
 SOURCES += \
     ../numeric_method/MCG.cpp \
+    ../numeric_method/MMR.cpp \
     ../numeric_method/MWR.cpp \
     ../numeric_method/Matrix_solver.cpp \
     ../src/Task_manager.cpp \
@@ -19,7 +20,9 @@ SOURCES += \
     uiMethods.cpp
 
 HEADERS += \
+    ../include/LLT.h \
     ../include/MCG.h \
+    ../include/MMR.h \
     ../include/MWR.h \
     ../include/Matrix_solver.h \
     ../include/Task_manager.h \

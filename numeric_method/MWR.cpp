@@ -11,7 +11,7 @@ MWR::MWR(const size_t _n, const size_t _m)
 <<<<<<< HEAD
         return 2.0 / ( 1.0 + std::sin(pi / static_cast<double>(N)));
     }()*/
-    1.9944
+    1.9933
     ),
     x_step_2( _n * _n ), y_step_2( _m * _m )
     {
@@ -52,6 +52,7 @@ int MWR::solve( const double precision, const int N_max)
     for(;N < N_max;++N)
     {
         double eps = 0;
+        printf("s: %d eps: %.12lf\n", N, eps);
         for(int idx = 1; idx < diagonal_num - 1; ++idx)
         {
             const size_t j0 = std::min(idx, static_cast<int>(n) - 1);

@@ -23,9 +23,13 @@ void MainWindow::taskTest(std::vector<QSurfaceDataArray>& array)
     {
         sN_test = std::make_unique<numeric_method::MCG>(n,m,numeric_method::test{});
     }
-    else
+    else if (ui->comboBox->currentIndex() == 0)
     {
        sN_test = std::make_unique<numeric_method::MWR>(n,m,numeric_method::test{});
+    }
+    else
+    {
+        sN_test = std::make_unique<numeric_method::MMR>(n,m,numeric_method::test{});
     }
 
     const double stepX = (bX - aX) / static_cast<double>(n);
@@ -154,10 +158,15 @@ void MainWindow::taskMain(std::vector<QSurfaceDataArray>& array)
         sN = std::make_unique<numeric_method::MCG>(n,m);
         s2N = std::make_unique<numeric_method::MCG>(2 * n,2 * m);
     }
-    else
+    else if (ui->comboBox->currentIndex() == 0)
     {
         sN = std::make_unique<numeric_method::MWR>(n,m);
         s2N = std::make_unique<numeric_method::MWR>(2 * n,2 * m);
+    }
+    else
+    {
+        sN = std::make_unique<numeric_method::MMR>(n,m);
+        s2N = std::make_unique<numeric_method::MMR>(2 * n,2 * m);
     }
 
     const double stepX = (bX - aX) / static_cast<double>(n);

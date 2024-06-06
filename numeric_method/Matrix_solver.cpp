@@ -70,6 +70,7 @@ Matrix_solver::Matrix_solver(const size_t _n, const size_t _m, test dummy)
                 const double y = static_cast<double> (j) / _m;
                 //ret[i][j] += _n * _n * (esin( (x + h) * y) + esin( (x - h) * y) - 2 * esin(x * y)); // d2/dx^2
                 //ret[i][j] += _m * _m * (esin( x * (y + k)) + esin( x * (y - k)) - 2 * esin(x * y)); // d2/dy^2
+                //std::cout << "f " << ret[i][j] << std::endl;
                 ret[i][j] = esin(x * y) * pi * pi *
                             (x * x + y * y) * (2. - 4. * sin(pi * x * y) * sin(pi * x * y) + sin(2. * pi * x * y) * sin(2. * pi * x * y));
             }

@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     surfaceGraph->setAxisZ(new QValue3DAxis);
 
     surfaceGraph->axisX()->setLabelFormat("%.4f");
-    surfaceGraph->axisY()->setLabelFormat("%.4f");
+    surfaceGraph->axisY()->setLabelFormat("%.16f");
     surfaceGraph->axisZ()->setLabelFormat("%.4f");
 
     surfaceGraph->axisX()->setLabelAutoRotation(30.f);
@@ -297,6 +297,13 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         curTest = Numerical_method::MCG_TEST;
         curMain = Numerical_method::MCG_MAIN;
         curMain2 = Numerical_method::MCG_BIGGER;
+        break;
+    case 2:
+        ui->labelMethod->setText("Метод минимальных невязок");
+        //ui->labelMethodParametr->setText("С параметром ω = ");
+        curTest = Numerical_method::MMR_TEST;
+        curMain = Numerical_method::MMR_MAIN;
+        curMain2 = Numerical_method::MMR_BIGGER;
         break;
     default:
         break;

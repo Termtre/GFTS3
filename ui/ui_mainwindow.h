@@ -273,7 +273,7 @@ public:
         tableWidget->setObjectName("tableWidget");
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableWidget->horizontalHeader()->setVisible(true);
-        tableWidget->horizontalHeader()->setDefaultSectionSize(200);
+        tableWidget->horizontalHeader()->setDefaultSectionSize(150);
 
         gridLayout_10->addWidget(tableWidget, 0, 0, 1, 1);
 
@@ -285,7 +285,7 @@ public:
         tableWidget_2 = new QTableWidget(tab_5);
         tableWidget_2->setObjectName("tableWidget_2");
         tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        tableWidget_2->horizontalHeader()->setDefaultSectionSize(200);
+        tableWidget_2->horizontalHeader()->setDefaultSectionSize(150);
 
         gridLayout_11->addWidget(tableWidget_2, 0, 0, 1, 1);
 
@@ -297,7 +297,7 @@ public:
         tableWidget_3 = new QTableWidget(tab_6);
         tableWidget_3->setObjectName("tableWidget_3");
         tableWidget_3->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        tableWidget_3->horizontalHeader()->setDefaultSectionSize(200);
+        tableWidget_3->horizontalHeader()->setDefaultSectionSize(150);
 
         gridLayout_12->addWidget(tableWidget_3, 0, 0, 1, 1);
 
@@ -845,6 +845,7 @@ public:
         comboBox = new QComboBox(groupBox);
         comboBox->addItem(QString());
         comboBox->addItem(QString());
+        comboBox->addItem(QString());
         comboBox->setObjectName("comboBox");
         sizePolicy9.setHeightForWidth(comboBox->sizePolicy().hasHeightForWidth());
         comboBox->setSizePolicy(sizePolicy9);
@@ -938,7 +939,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_2->setCurrentIndex(2);
+        tabWidget_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1004,6 +1005,7 @@ public:
         label_9->setText(QCoreApplication::translate("MainWindow", "\316\265<sub>\320\274\320\265\321\202</sub>: ", nullptr));
         comboBox->setItemText(0, QCoreApplication::translate("MainWindow", "\320\222\320\265\321\200\321\205\320\275\320\265\320\271 \321\200\320\265\320\273\320\260\320\272\321\201\320\260\321\206\320\270\320\270 \317\211 \342\210\210(0, 2)", nullptr));
         comboBox->setItemText(1, QCoreApplication::translate("MainWindow", "\320\241\320\276\320\277\321\200\321\217\320\266\320\265\320\275\320\275\321\213\321\205 \320\263\321\200\320\260\320\264\320\270\320\265\320\275\321\202\320\276\320\262", nullptr));
+        comboBox->setItemText(2, QCoreApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\320\260\320\273\321\214\320\275\321\213\321\205 \320\275\320\265\320\262\321\217\320\267\320\276\320\272", nullptr));
 
         label_22->setText(QCoreApplication::translate("MainWindow", "N<sub>max</sub>: ", nullptr));
         NmaxEdit->setText(QCoreApplication::translate("MainWindow", "10000", nullptr));

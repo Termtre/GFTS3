@@ -5,6 +5,7 @@
 
 #include "MWR.h"
 #include "MCG.h"
+#include "MMR.h"
 
 enum class Numerical_method
 {

@@ -51,6 +51,15 @@ void Task_manager::createTask(const size_t n, const size_t m, const Numerical_me
         case Numerical_method::MCG_TEST:
             task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MCG>(n, m, numeric_method::test{}));
             break;
+        case Numerical_method::MMR_MAIN:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MMR>(n, m));
+            break;
+        case Numerical_method::MMR_BIGGER:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MMR>(2 * n, 2 * m));
+            break;
+        case Numerical_method::MMR_TEST:
+            task[i] = std::make_unique<ThreadInput>(Emet, Nmax, std::make_unique<numeric_method::MMR>(n, m, numeric_method::test{}));
+            break;
         default:
             return;
             //TODO add new case with method
