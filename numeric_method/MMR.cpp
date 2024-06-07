@@ -35,9 +35,9 @@ int MMR::solve(const double precision, const int N_max)
     };
 
     int N = 0;
-    double eps;
+    double eps = 0.;
 
-    for (; N <= N_max; N++)
+    for (; N < N_max; N++)
     {
         eps = 0.;
 
@@ -50,17 +50,19 @@ int MMR::solve(const double precision, const int N_max)
         {
             for(size_t j = 1; j < m; ++j)
             {
+                double temp = v[i][j];
                 const double incr = t_ * residual[i][j];
                 v[i][j] -= incr;
-                if(incr > eps)
-                    eps = incr;
+
+                eps = std::max(eps, fabs(temp - v[i][j]));
             }
         }
+
+        printf("N %d  eps %.12lf \n", N, eps);
 
         if (eps < precision)
             break;
 
-        getResidual();
     }
 
     this->precision = eps;
@@ -73,8 +75,8 @@ void MMR::getResidual()
     for (size_t i = 1; i < n; ++i)
     {
         for(size_t j = 1; j < m; ++j)
-           residual[i][j] = +((v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * n * n +
-                              (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * m * m) +
+           residual[i][j] = (v[i + 1][j] - 2 * v[i][j] + v[i - 1][j]) * x_step_2 +
+                              (v[i][j + 1] - 2 * v[i][j] + v[i][j - 1]) * y_step_2 +
                       f[i][j];
     }
 
